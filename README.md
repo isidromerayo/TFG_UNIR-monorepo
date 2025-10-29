@@ -87,7 +87,38 @@ cd react && npm test
 
 # Vue3
 cd vue3 && npm run test
+
+# Todos los tests
+./scripts/test-all.sh
 ```
+
+## 🛡️ Análisis de Seguridad
+
+### Análisis Automático (CI/CD)
+El pipeline incluye análisis de seguridad automático:
+- **Backend**: OWASP Dependency Check
+- **Frontend**: npm audit para Angular, React y Vue3
+
+### Análisis Manual
+```bash
+# Ejecutar análisis completo de seguridad
+./scripts/security-audit.sh
+
+# Solo backend (OWASP)
+cd backend && ./mvnw org.owasp:dependency-check-maven:check
+
+# Solo frontend (npm audit)
+cd angular && npm audit
+cd react && npm audit  
+cd vue3 && npm audit
+```
+
+### Reportes de Seguridad
+Los reportes se generan en `./security-reports/`:
+- `backend-owasp-report.html` - Análisis OWASP del backend
+- `angular-audit.json` - Audit de Angular
+- `react-audit.json` - Audit de React  
+- `vue3-audit.json` - Audit de Vue3
 
 ## 📦 Build y Deploy
 

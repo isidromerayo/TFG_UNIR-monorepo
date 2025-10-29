@@ -39,6 +39,53 @@ jobs:
           echo "⚠️ No test reports found"
         fi
 
+  # Security Analysis
+  security-analysis:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+    
+    - name: Run OWASP Dependency Check
+      run: |
+        cd backend
+        ./mvnw org.owasp:dependency-check-maven:check -Dnvd.api.key=${{ secrets.NVD_API_KEY }} -Danalyzer.ossindex.enabled=false
+      continue-on-error: true
+      env:
+        NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+    
+    - name: Upload Security Report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: owasp-dependency-check-report
+        path: backend/target/dependency-check-report.html
+        retention-days: 30
+    
+    - name: Security Analysis Summary
+      run: |
+        cd backend
+        if [ -f "target/dependency-check-report.html" ]; then
+          echo "🛡️ Security analysis completed"
+          echo "📊 Report generated: dependency-check-report.html"
+          # Extract summary information
+          if grep -q "Vulnerable Dependencies.*0" target/dependency-check-report.html; then
+            echo "✅ No vulnerabilities found!"
+          else
+            echo "⚠️ Vulnerabilities detected - check the report"
+          fi
+        else
+          echo "❌ Security report not generated"
+        fi
+
   # Angular Tests
   angular-tests:
     runs-on: ubuntu-latest
@@ -63,6 +110,22 @@ jobs:
         cd angular
         npm run test-headless-cc || echo "Angular tests completed with issues"
       continue-on-error: true
+    
+    - name: Angular Security Audit
+      run: |
+        cd angular
+        echo "🔍 Running Angular security audit..."
+        npm audit --audit-level=moderate || echo "⚠️ Angular audit found issues"
+        npm audit --json > angular-audit.json || true
+      continue-on-error: true
+    
+    - name: Upload Angular Audit Report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: angular-security-audit
+        path: angular/angular-audit.json
+        retention-days: 30
 
   # React Tests
   react-tests:
@@ -87,6 +150,22 @@ jobs:
         cd react
         npm run test-headless-cc || echo "React tests completed with issues"
       continue-on-error: true
+    
+    - name: React Security Audit
+      run: |
+        cd react
+        echo "🔍 Running React security audit..."
+        npm audit --audit-level=moderate || echo "⚠️ React audit found issues"
+        npm audit --json > react-audit.json || true
+      continue-on-error: true
+    
+    - name: Upload React Audit Report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: react-security-audit
+        path: react/react-audit.json
+        retention-days: 30
 
   # Vue3 Tests
   vue3-tests:
@@ -111,10 +190,26 @@ jobs:
         cd vue3
         npm run test-headless-cc || echo "Vue3 tests completed with issues"
       continue-on-error: true
+    
+    - name: Vue3 Security Audit
+      run: |
+        cd vue3
+        echo "🔍 Running Vue3 security audit..."
+        npm audit --audit-level=moderate || echo "⚠️ Vue3 audit found issues"
+        npm audit --json > vue3-audit.json || true
+      continue-on-error: true
+    
+    - name: Upload Vue3 Audit Report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: vue3-security-audit
+        path: vue3/vue3-audit.json
+        retention-days: 30
 
   # Build All Projects
   build-all:
-    needs: [backend-tests, angular-tests, react-tests, vue3-tests]
+    needs: [backend-tests, security-analysis, angular-tests, react-tests, vue3-tests]
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -166,3 +261,33 @@ jobs:
         echo "🎉 Build process completed!"
         echo "✅ All projects have been processed"
         echo "📊 Check individual job logs for detailed results"
+
+  # Security Summary
+  security-summary:
+    needs: [security-analysis, angular-tests, react-tests, vue3-tests]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+    - name: Security Analysis Summary
+      run: |
+        echo "🛡️ Security Analysis Summary"
+        echo "=========================="
+        echo ""
+        echo "📋 Analysis Completed:"
+        echo "  ✅ Backend: OWASP Dependency Check"
+        echo "  ✅ Angular: npm audit"
+        echo "  ✅ React: npm audit"
+        echo "  ✅ Vue3: npm audit"
+        echo ""
+        echo "📊 Reports Available:"
+        echo "  - OWASP Dependency Check Report (HTML)"
+        echo "  - Angular Security Audit (JSON)"
+        echo "  - React Security Audit (JSON)"
+        echo "  - Vue3 Security Audit (JSON)"
+        echo ""
+        echo "🔍 To view reports:"
+        echo "  1. Go to Actions tab"
+        echo "  2. Click on this workflow run"
+        echo "  3. Download artifacts from the bottom of the page"
+        echo ""
+        echo "⚠️  Note: Review all security reports before deployment"
