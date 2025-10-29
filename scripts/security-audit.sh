@@ -37,7 +37,14 @@ run_trivy() {
     local template_arg=""
     
     if [ "$format" = "template" ]; then
-        template_arg="--template @contrib/html.tpl"
+        if [ "$USE_DOCKER" = true ]; then
+            template_arg="--template @contrib/html.tpl"
+        else
+            # Para Trivy local, usar formato tabla si hay problemas con templates
+            echo "⚠️  Template HTML no disponible en Trivy local, usando formato tabla"
+            format="table"
+            template_arg=""
+        fi
     fi
     
     if [ "$USE_DOCKER" = true ]; then
