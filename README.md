@@ -102,12 +102,16 @@ El pipeline incluye análisis de seguridad automático con **Trivy**:
 
 ### Análisis Manual
 ```bash
-# Ejecutar análisis completo con Trivy
+# Ejecutar análisis completo con Trivy (usa Docker automáticamente si está disponible)
 ./scripts/security-audit.sh
 
-# Solo análisis específico con Trivy
-trivy fs --format table .                    # Formato texto
-trivy fs --format template --template "@contrib/html.tpl" --output report.html .  # Formato HTML
+# Usar Trivy con Docker directamente (recomendado)
+./scripts/trivy-docker.sh backend                                    # Formato tabla
+./scripts/trivy-docker.sh -f json -o report.json angular           # Formato JSON
+./scripts/trivy-docker.sh -f template -t @contrib/html.tpl -o report.html react  # Formato HTML
+
+# Usar imagen Docker manualmente
+docker run --rm -v $(pwd):/workspace aquasec/trivy:latest fs --format table /workspace/backend
 
 # Análisis complementario con npm audit
 cd angular && npm audit
@@ -133,6 +137,13 @@ Los reportes se generan en `./security-reports/`:
 
 **Reportes Complementarios:**
 - `*-npm-audit.json` - Auditorías npm de cada frontend
+
+### Ventajas de usar Trivy con Docker
+- ✅ **Sin instalación**: No requiere instalar Trivy localmente
+- ✅ **Consistencia**: Misma versión en desarrollo y CI/CD
+- ✅ **Portabilidad**: Funciona en cualquier sistema con Docker
+- ✅ **Actualizaciones**: Siempre usa la última versión disponible
+- ✅ **Aislamiento**: No interfiere con el sistema local
 
 ## 📦 Build y Deploy
 

@@ -10,32 +10,43 @@ if [ ! -f ".gitmodules" ]; then
     exit 1
 fi
 
-# Verificar si Trivy está instalado
-if ! command -v trivy &> /dev/null; then
-    echo "📦 Trivy no está instalado. Instalando..."
-    
-    # Detectar el sistema operativo
-    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        # Linux
-        sudo apt-get update
-        sudo apt-get install -y wget apt-transport-https gnupg lsb-release
-        wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
-        echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
-        sudo apt-get update
-        sudo apt-get install -y trivy
-    elif [[ "$OSTYPE" == "darwin"* ]]; then
-        # macOS
-        if command -v brew &> /dev/null; then
-            brew install trivy
-        else
-            echo "❌ Homebrew no encontrado. Instala Trivy manualmente: https://aquasecurity.github.io/trivy/"
-            exit 1
-        fi
-    else
-        echo "❌ Sistema operativo no soportado. Instala Trivy manualmente: https://aquasecurity.github.io/trivy/"
-        exit 1
-    fi
+# Verificar si Docker está disponible
+USE_DOCKER=false
+if command -v docker &> /dev/null; then
+    echo "🐳 Docker detectado - usando imagen aquasec/trivy"
+    USE_DOCKER=true
+    # Descargar la imagen de Trivy
+    docker pull aquasec/trivy:latest
+elif command -v trivy &> /dev/null; then
+    echo "🔍 Trivy local detectado"
+    USE_DOCKER=false
+else
+    echo "❌ Ni Docker ni Trivy están instalados"
+    echo "📦 Opciones:"
+    echo "  1. Instalar Docker y usar la imagen aquasec/trivy (recomendado)"
+    echo "  2. Ejecutar: ./scripts/install-trivy.sh"
+    echo "  3. Instalar Trivy manualmente: https://aquasecurity.github.io/trivy/"
+    exit 1
 fi
+
+# Función para ejecutar Trivy
+run_trivy() {
+    local format=$1
+    local output=$2
+    local target=$3
+    local template_arg=""
+    
+    if [ "$format" = "template" ]; then
+        template_arg="--template @contrib/html.tpl"
+    fi
+    
+    if [ "$USE_DOCKER" = true ]; then
+        docker run --rm -v "$(pwd)":/workspace \
+            aquasec/trivy:latest fs --format "$format" $template_arg --output "/workspace/$output" "/workspace/$target"
+    else
+        trivy fs --format "$format" $template_arg --output "$output" "$target"
+    fi
+}
 
 # Crear directorio para reportes
 mkdir -p security-reports
@@ -50,14 +61,14 @@ if [ -f "mvnw" ]; then
     ./mvnw clean package -DskipTests > /dev/null 2>&1
     
     echo "🔍 Ejecutando Trivy en el proyecto backend..."
-    trivy fs --format table --output ../security-reports/backend-trivy-report.txt .
-    trivy fs --format template --template "@contrib/html.tpl" --output ../security-reports/backend-trivy-report.html .
+    run_trivy "table" "../security-reports/backend-trivy-report.txt" "."
+    run_trivy "template" "../security-reports/backend-trivy-report.html" "."
     
     # Analizar JAR si existe
     if [ -f "target/backend.jar" ]; then
         echo "📦 Analizando JAR del backend..."
-        trivy fs --format table --output ../security-reports/backend-jar-trivy-report.txt target/backend.jar
-        trivy fs --format template --template "@contrib/html.tpl" --output ../security-reports/backend-jar-trivy-report.html target/backend.jar
+        run_trivy "table" "../security-reports/backend-jar-trivy-report.txt" "target/backend.jar"
+        run_trivy "template" "../security-reports/backend-jar-trivy-report.html" "target/backend.jar"
     fi
     
     echo "✅ Análisis Trivy del backend completado"
@@ -71,8 +82,8 @@ echo "=============================================="
 cd ../angular
 if [ -f "package.json" ]; then
     echo "🔍 Ejecutando Trivy en Angular..."
-    trivy fs --format table --output ../security-reports/angular-trivy-report.txt .
-    trivy fs --format template --template "@contrib/html.tpl" --output ../security-reports/angular-trivy-report.html .
+    run_trivy "table" "../security-reports/angular-trivy-report.txt" "."
+    run_trivy "template" "../security-reports/angular-trivy-report.html" "."
     
     # También ejecutar npm audit como complemento
     echo "📋 Ejecutando npm audit complementario..."
@@ -88,8 +99,8 @@ echo "==========================================="
 cd ../react
 if [ -f "package.json" ]; then
     echo "🔍 Ejecutando Trivy en React..."
-    trivy fs --format table --output ../security-reports/react-trivy-report.txt .
-    trivy fs --format template --template "@contrib/html.tpl" --output ../security-reports/react-trivy-report.html .
+    run_trivy "table" "../security-reports/react-trivy-report.txt" "."
+    run_trivy "template" "../security-reports/react-trivy-report.html" "."
     
     # También ejecutar npm audit como complemento
     echo "📋 Ejecutando npm audit complementario..."

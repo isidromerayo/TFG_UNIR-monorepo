@@ -60,54 +60,61 @@ jobs:
         ./mvnw clean package -DskipTests
       continue-on-error: true
     
-    - name: Install Trivy
-      run: |
-        sudo apt-get update
-        sudo apt-get install wget apt-transport-https gnupg lsb-release
-        wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
-        echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
-        sudo apt-get update
-        sudo apt-get install trivy
-    
     - name: Run Trivy Security Scan - Backend
       run: |
-        cd backend
         echo "🔍 Scanning backend dependencies with Trivy..."
         
         # Scan filesystem for vulnerabilities
-        trivy fs --format table --output ../trivy-backend-report.txt .
-        trivy fs --format template --template "@contrib/html.tpl" --output ../trivy-backend-report.html .
+        docker run --rm -v ${{ github.workspace }}:/workspace \
+          aquasec/trivy:latest fs --format table --output /workspace/trivy-backend-report.txt /workspace/backend
+        
+        docker run --rm -v ${{ github.workspace }}:/workspace \
+          aquasec/trivy:latest fs --format template --template "@contrib/html.tpl" \
+          --output /workspace/trivy-backend-report.html /workspace/backend
         
         # Scan JAR file if exists
-        if [ -f "target/backend.jar" ]; then
+        if [ -f "backend/target/backend.jar" ]; then
           echo "📦 Scanning JAR file..."
-          trivy fs --format table --output ../trivy-backend-jar.txt target/backend.jar
-          trivy fs --format template --template "@contrib/html.tpl" --output ../trivy-backend-jar.html target/backend.jar
+          docker run --rm -v ${{ github.workspace }}:/workspace \
+            aquasec/trivy:latest fs --format table --output /workspace/trivy-backend-jar.txt /workspace/backend/target/backend.jar
+          
+          docker run --rm -v ${{ github.workspace }}:/workspace \
+            aquasec/trivy:latest fs --format template --template "@contrib/html.tpl" \
+            --output /workspace/trivy-backend-jar.html /workspace/backend/target/backend.jar
         fi
       continue-on-error: true
     
     - name: Run Trivy Security Scan - Angular
       run: |
-        cd angular
         echo "🔍 Scanning Angular dependencies with Trivy..."
-        trivy fs --format table --output ../trivy-angular-report.txt .
-        trivy fs --format template --template "@contrib/html.tpl" --output ../trivy-angular-report.html .
+        docker run --rm -v ${{ github.workspace }}:/workspace \
+          aquasec/trivy:latest fs --format table --output /workspace/trivy-angular-report.txt /workspace/angular
+        
+        docker run --rm -v ${{ github.workspace }}:/workspace \
+          aquasec/trivy:latest fs --format template --template "@contrib/html.tpl" \
+          --output /workspace/trivy-angular-report.html /workspace/angular
       continue-on-error: true
     
     - name: Run Trivy Security Scan - React
       run: |
-        cd react
         echo "🔍 Scanning React dependencies with Trivy..."
-        trivy fs --format table --output ../trivy-react-report.txt .
-        trivy fs --format template --template "@contrib/html.tpl" --output ../trivy-react-report.html .
+        docker run --rm -v ${{ github.workspace }}:/workspace \
+          aquasec/trivy:latest fs --format table --output /workspace/trivy-react-report.txt /workspace/react
+        
+        docker run --rm -v ${{ github.workspace }}:/workspace \
+          aquasec/trivy:latest fs --format template --template "@contrib/html.tpl" \
+          --output /workspace/trivy-react-report.html /workspace/react
       continue-on-error: true
     
     - name: Run Trivy Security Scan - Vue3
       run: |
-        cd vue3
         echo "🔍 Scanning Vue3 dependencies with Trivy..."
-        trivy fs --format table --output ../trivy-vue3-report.txt .
-        trivy fs --format template --template "@contrib/html.tpl" --output ../trivy-vue3-report.html .
+        docker run --rm -v ${{ github.workspace }}:/workspace \
+          aquasec/trivy:latest fs --format table --output /workspace/trivy-vue3-report.txt /workspace/vue3
+        
+        docker run --rm -v ${{ github.workspace }}:/workspace \
+          aquasec/trivy:latest fs --format template --template "@contrib/html.tpl" \
+          --output /workspace/trivy-vue3-report.html /workspace/vue3
       continue-on-error: true
     
     - name: Upload Trivy Reports
