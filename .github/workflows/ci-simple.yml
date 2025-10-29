@@ -80,7 +80,7 @@ jobs:
     - name: Install React Dependencies
       run: |
         cd react
-        npm ci
+        npm ci || npm install
     
     - name: Run React Tests
       run: |
@@ -104,7 +104,7 @@ jobs:
     - name: Install Vue3 Dependencies
       run: |
         cd vue3
-        npm ci
+        npm ci || npm install
     
     - name: Run Vue3 Tests
       run: |
@@ -150,14 +150,14 @@ jobs:
     - name: Build React
       run: |
         cd react
-        npm ci
+        npm ci || npm install
         npm run build || echo "React build completed with warnings"
       continue-on-error: true
     
     - name: Build Vue3
       run: |
         cd vue3
-        npm ci
+        npm ci || npm install
         npm run build || echo "Vue3 build completed with warnings"
       continue-on-error: true
     
