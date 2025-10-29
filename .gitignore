@@ -147,3 +147,5 @@ Thumbs.db
 security-reports/
 **/dependency-check-report.html
 **/*-audit.json
+**/trivy-*-report.*
+trivy-*-report.*

@@ -95,19 +95,21 @@ cd vue3 && npm run test
 ## 🛡️ Análisis de Seguridad
 
 ### Análisis Automático (CI/CD)
-El pipeline incluye análisis de seguridad automático:
-- **Backend**: OWASP Dependency Check
-- **Frontend**: npm audit para Angular, React y Vue3
+El pipeline incluye análisis de seguridad automático con **Trivy**:
+- **Todos los proyectos**: Análisis completo de vulnerabilidades con Trivy
+- **Reportes duales**: Formato texto y HTML para cada proyecto
+- **Cobertura completa**: Dependencias, código fuente y artefactos
 
 ### Análisis Manual
 ```bash
-# Ejecutar análisis completo de seguridad
+# Ejecutar análisis completo con Trivy
 ./scripts/security-audit.sh
 
-# Solo backend (OWASP)
-cd backend && ./mvnw org.owasp:dependency-check-maven:check
+# Solo análisis específico con Trivy
+trivy fs --format table .                    # Formato texto
+trivy fs --format template --template "@contrib/html.tpl" --output report.html .  # Formato HTML
 
-# Solo frontend (npm audit)
+# Análisis complementario con npm audit
 cd angular && npm audit
 cd react && npm audit  
 cd vue3 && npm audit
@@ -115,10 +117,22 @@ cd vue3 && npm audit
 
 ### Reportes de Seguridad
 Los reportes se generan en `./security-reports/`:
-- `backend-owasp-report.html` - Análisis OWASP del backend
-- `angular-audit.json` - Audit de Angular
-- `react-audit.json` - Audit de React  
-- `vue3-audit.json` - Audit de Vue3
+
+**Reportes Trivy (HTML):**
+- `backend-trivy-report.html` - Análisis completo del backend
+- `backend-jar-trivy-report.html` - Análisis del JAR compilado
+- `angular-trivy-report.html` - Análisis de Angular
+- `react-trivy-report.html` - Análisis de React
+- `vue3-trivy-report.html` - Análisis de Vue3
+
+**Reportes Trivy (Texto):**
+- `backend-trivy-report.txt` - Resumen textual del backend
+- `angular-trivy-report.txt` - Resumen textual de Angular
+- `react-trivy-report.txt` - Resumen textual de React
+- `vue3-trivy-report.txt` - Resumen textual de Vue3
+
+**Reportes Complementarios:**
+- `*-npm-audit.json` - Auditorías npm de cada frontend
 
 ## 📦 Build y Deploy
 

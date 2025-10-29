@@ -39,7 +39,7 @@ jobs:
           echo "⚠️ No test reports found"
         fi
 
-  # Security Analysis
+  # Security Analysis with Trivy
   security-analysis:
     runs-on: ubuntu-latest
     steps:
@@ -54,37 +54,89 @@ jobs:
         distribution: 'temurin'
         cache: maven
     
-    - name: Run OWASP Dependency Check
+    - name: Build Backend for Analysis
       run: |
         cd backend
-        ./mvnw org.owasp:dependency-check-maven:check -Dnvd.api.key=${{ secrets.NVD_API_KEY }} -Danalyzer.ossindex.enabled=false
+        ./mvnw clean package -DskipTests
       continue-on-error: true
-      env:
-        NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
     
-    - name: Upload Security Report
+    - name: Install Trivy
+      run: |
+        sudo apt-get update
+        sudo apt-get install wget apt-transport-https gnupg lsb-release
+        wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+        echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+        sudo apt-get update
+        sudo apt-get install trivy
+    
+    - name: Run Trivy Security Scan - Backend
+      run: |
+        cd backend
+        echo "🔍 Scanning backend dependencies with Trivy..."
+        
+        # Scan filesystem for vulnerabilities
+        trivy fs --format table --output ../trivy-backend-report.txt .
+        trivy fs --format template --template "@contrib/html.tpl" --output ../trivy-backend-report.html .
+        
+        # Scan JAR file if exists
+        if [ -f "target/backend.jar" ]; then
+          echo "📦 Scanning JAR file..."
+          trivy fs --format table --output ../trivy-backend-jar.txt target/backend.jar
+          trivy fs --format template --template "@contrib/html.tpl" --output ../trivy-backend-jar.html target/backend.jar
+        fi
+      continue-on-error: true
+    
+    - name: Run Trivy Security Scan - Angular
+      run: |
+        cd angular
+        echo "🔍 Scanning Angular dependencies with Trivy..."
+        trivy fs --format table --output ../trivy-angular-report.txt .
+        trivy fs --format template --template "@contrib/html.tpl" --output ../trivy-angular-report.html .
+      continue-on-error: true
+    
+    - name: Run Trivy Security Scan - React
+      run: |
+        cd react
+        echo "🔍 Scanning React dependencies with Trivy..."
+        trivy fs --format table --output ../trivy-react-report.txt .
+        trivy fs --format template --template "@contrib/html.tpl" --output ../trivy-react-report.html .
+      continue-on-error: true
+    
+    - name: Run Trivy Security Scan - Vue3
+      run: |
+        cd vue3
+        echo "🔍 Scanning Vue3 dependencies with Trivy..."
+        trivy fs --format table --output ../trivy-vue3-report.txt .
+        trivy fs --format template --template "@contrib/html.tpl" --output ../trivy-vue3-report.html .
+      continue-on-error: true
+    
+    - name: Upload Trivy Reports
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: owasp-dependency-check-report
-        path: backend/target/dependency-check-report.html
+        name: trivy-security-reports
+        path: |
+          trivy-*-report.txt
+          trivy-*-report.html
         retention-days: 30
     
     - name: Security Analysis Summary
       run: |
-        cd backend
-        if [ -f "target/dependency-check-report.html" ]; then
-          echo "🛡️ Security analysis completed"
-          echo "📊 Report generated: dependency-check-report.html"
-          # Extract summary information
-          if grep -q "Vulnerable Dependencies.*0" target/dependency-check-report.html; then
-            echo "✅ No vulnerabilities found!"
-          else
-            echo "⚠️ Vulnerabilities detected - check the report"
+        echo "🛡️ Trivy Security Analysis Completed"
+        echo "====================================="
+        echo ""
+        echo "📊 Reports Generated:"
+        ls -la trivy-*-report.* 2>/dev/null || echo "No reports found"
+        echo ""
+        echo "📋 Summary:"
+        for file in trivy-*-report.txt; do
+          if [ -f "$file" ]; then
+            echo "📄 $file:"
+            # Show summary of vulnerabilities
+            grep -E "(Total:|HIGH|CRITICAL)" "$file" | head -5 || echo "  No critical/high vulnerabilities summary found"
+            echo ""
           fi
-        else
-          echo "❌ Security report not generated"
-        fi
+        done
 
   # Angular Tests
   angular-tests:
@@ -274,16 +326,15 @@ jobs:
         echo "=========================="
         echo ""
         echo "📋 Analysis Completed:"
-        echo "  ✅ Backend: OWASP Dependency Check"
-        echo "  ✅ Angular: npm audit"
-        echo "  ✅ React: npm audit"
-        echo "  ✅ Vue3: npm audit"
+        echo "  ✅ Backend: Trivy filesystem and JAR analysis"
+        echo "  ✅ Angular: Trivy filesystem analysis"
+        echo "  ✅ React: Trivy filesystem analysis"
+        echo "  ✅ Vue3: Trivy filesystem analysis"
         echo ""
         echo "📊 Reports Available:"
-        echo "  - OWASP Dependency Check Report (HTML)"
-        echo "  - Angular Security Audit (JSON)"
-        echo "  - React Security Audit (JSON)"
-        echo "  - Vue3 Security Audit (JSON)"
+        echo "  - Trivy Security Reports (HTML & Text)"
+        echo "  - Backend JAR Analysis (HTML & Text)"
+        echo "  - Frontend Dependencies Analysis (HTML & Text)"
         echo ""
         echo "🔍 To view reports:"
         echo "  1. Go to Actions tab"
