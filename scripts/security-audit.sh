@@ -10,22 +10,32 @@ if [ ! -f ".gitmodules" ]; then
     exit 1
 fi
 
-# Verificar si Docker está disponible
-USE_DOCKER=false
-if command -v docker &> /dev/null; then
+# Verificar si Podman o Docker están disponibles
+USE_CONTAINER=false
+CONTAINER_CMD=""
+
+if command -v podman &> /dev/null; then
+    echo "🐙 Podman detectado - usando imagen aquasec/trivy"
+    USE_CONTAINER=true
+    CONTAINER_CMD="podman"
+    # Descargar la imagen de Trivy
+    podman pull docker.io/aquasec/trivy:latest
+elif command -v docker &> /dev/null; then
     echo "🐳 Docker detectado - usando imagen aquasec/trivy"
-    USE_DOCKER=true
+    USE_CONTAINER=true
+    CONTAINER_CMD="docker"
     # Descargar la imagen de Trivy
     docker pull aquasec/trivy:latest
 elif command -v trivy &> /dev/null; then
     echo "🔍 Trivy local detectado"
-    USE_DOCKER=false
+    USE_CONTAINER=false
 else
-    echo "❌ Ni Docker ni Trivy están instalados"
-    echo "📦 Opciones:"
-    echo "  1. Instalar Docker y usar la imagen aquasec/trivy (recomendado)"
-    echo "  2. Ejecutar: ./scripts/install-trivy.sh"
-    echo "  3. Instalar Trivy manualmente: https://aquasecurity.github.io/trivy/"
+    echo "❌ Ni Podman, Docker ni Trivy están instalados"
+    echo "📦 Opciones (en orden de preferencia):"
+    echo "  1. Instalar Podman y usar la imagen aquasec/trivy (recomendado)"
+    echo "  2. Instalar Docker y usar la imagen aquasec/trivy"
+    echo "  3. Ejecutar: ./scripts/install-trivy.sh"
+    echo "  4. Instalar Trivy manualmente: https://aquasecurity.github.io/trivy/"
     exit 1
 fi
 
@@ -37,7 +47,7 @@ run_trivy() {
     local template_arg=""
     
     if [ "$format" = "template" ]; then
-        if [ "$USE_DOCKER" = true ]; then
+        if [ "$USE_CONTAINER" = true ]; then
             template_arg="--template @contrib/html.tpl"
         else
             # Para Trivy local, usar formato tabla si hay problemas con templates
@@ -47,9 +57,9 @@ run_trivy() {
         fi
     fi
     
-    if [ "$USE_DOCKER" = true ]; then
-        docker run --rm -v "$(pwd)":/workspace \
-            aquasec/trivy:latest fs --format "$format" $template_arg --output "/workspace/$output" "/workspace/$target"
+    if [ "$USE_CONTAINER" = true ]; then
+        $CONTAINER_CMD run --rm -v "$(pwd)":/workspace \
+            docker.io/aquasec/trivy:latest fs --format "$format" $template_arg --output "/workspace/$output" "/workspace/$target"
     else
         trivy fs --format "$format" $template_arg --output "$output" "$target"
     fi

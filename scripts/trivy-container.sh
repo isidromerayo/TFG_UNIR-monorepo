@@ -1,13 +1,20 @@
 #!/bin/bash
 
-# Script para ejecutar Trivy usando la imagen Docker oficial
+# Script para ejecutar Trivy usando contenedores (Podman o Docker)
 
-echo "🐳 Ejecutando Trivy con Docker (aquasec/trivy)..."
-
-# Verificar que Docker esté instalado
-if ! command -v docker &> /dev/null; then
-    echo "❌ Docker no está instalado"
-    echo "📦 Instala Docker desde: https://docs.docker.com/get-docker/"
+# Detectar qué herramienta de contenedores está disponible
+CONTAINER_CMD=""
+if command -v podman &> /dev/null; then
+    echo "🐙 Ejecutando Trivy con Podman (aquasec/trivy)..."
+    CONTAINER_CMD="podman"
+elif command -v docker &> /dev/null; then
+    echo "🐳 Ejecutando Trivy con Docker (aquasec/trivy)..."
+    CONTAINER_CMD="docker"
+else
+    echo "❌ Ni Podman ni Docker están instalados"
+    echo "📦 Opciones de instalación:"
+    echo "  - Podman: https://podman.io/getting-started/installation"
+    echo "  - Docker: https://docs.docker.com/get-docker/"
     exit 1
 fi
 
@@ -88,7 +95,7 @@ case $FORMAT in
 esac
 
 # Construir comando Trivy
-TRIVY_CMD="docker run --rm -v $(pwd):/workspace aquasec/trivy:latest fs"
+TRIVY_CMD="$CONTAINER_CMD run --rm -v $(pwd):/workspace docker.io/aquasec/trivy:latest fs"
 TRIVY_CMD="$TRIVY_CMD --format $FORMAT"
 
 if [ -n "$OUTPUT" ]; then
@@ -113,8 +120,8 @@ fi
 echo ""
 
 # Descargar imagen si no existe
-echo "📦 Verificando imagen aquasec/trivy:latest..."
-docker pull aquasec/trivy:latest
+echo "📦 Verificando imagen docker.io/aquasec/trivy:latest..."
+$CONTAINER_CMD pull docker.io/aquasec/trivy:latest
 
 echo ""
 echo "🚀 Ejecutando Trivy..."
@@ -150,3 +157,6 @@ echo "  $0 -f json -o angular-report.json angular"
 echo ""
 echo "  # Escanear archivo JAR específico:"
 echo "  $0 -f table backend/target/backend.jar"
+echo ""
+echo "🐙 Usando Podman (recomendado para seguridad):"
+echo "  podman run --rm -v \$(pwd):/workspace docker.io/aquasec/trivy:latest fs /workspace/backend"

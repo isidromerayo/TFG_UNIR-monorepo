@@ -102,16 +102,19 @@ El pipeline incluye análisis de seguridad automático con **Trivy**:
 
 ### Análisis Manual
 ```bash
-# Ejecutar análisis completo con Trivy (usa Docker automáticamente si está disponible)
+# Ejecutar análisis completo con Trivy (usa Podman/Docker automáticamente si está disponible)
 ./scripts/security-audit.sh
 
-# Usar Trivy con Docker directamente (recomendado)
-./scripts/trivy-docker.sh backend                                    # Formato tabla
-./scripts/trivy-docker.sh -f json -o report.json angular           # Formato JSON
-./scripts/trivy-docker.sh -f template -t @contrib/html.tpl -o report.html react  # Formato HTML
+# Usar Trivy con contenedores directamente (recomendado)
+./scripts/trivy-container.sh backend                                    # Formato tabla
+./scripts/trivy-container.sh -f json -o report.json angular           # Formato JSON
+./scripts/trivy-container.sh -f template -t @contrib/html.tpl -o report.html react  # Formato HTML
 
-# Usar imagen Docker manualmente
-docker run --rm -v $(pwd):/workspace aquasec/trivy:latest fs --format table /workspace/backend
+# Usar imagen con Podman manualmente (preferido)
+podman run --rm -v $(pwd):/workspace docker.io/aquasec/trivy:latest fs --format table /workspace/backend
+
+# Usar imagen con Docker manualmente
+docker run --rm -v $(pwd):/workspace docker.io/aquasec/trivy:latest fs --format table /workspace/backend
 
 # Análisis complementario con npm audit
 cd angular && npm audit
@@ -138,12 +141,14 @@ Los reportes se generan en `./security-reports/`:
 **Reportes Complementarios:**
 - `*-npm-audit.json` - Auditorías npm de cada frontend
 
-### Ventajas de usar Trivy con Docker
+### Ventajas de usar Trivy con Contenedores (Podman/Docker)
 - ✅ **Sin instalación**: No requiere instalar Trivy localmente
 - ✅ **Consistencia**: Misma versión en desarrollo y CI/CD
-- ✅ **Portabilidad**: Funciona en cualquier sistema con Docker
+- ✅ **Portabilidad**: Funciona en cualquier sistema con Podman o Docker
 - ✅ **Actualizaciones**: Siempre usa la última versión disponible
 - ✅ **Aislamiento**: No interfiere con el sistema local
+- 🐙 **Podman**: Más seguro (sin daemon), rootless por defecto
+- 🐳 **Docker**: Amplia compatibilidad y ecosistema
 
 ## 📦 Build y Deploy
 
