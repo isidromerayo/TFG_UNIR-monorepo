@@ -153,6 +153,11 @@ Cada subproyecto puede desarrollarse independientemente:
 2. Haz push de tus cambios al repo individual
 3. Actualiza este monorepo cuando sea necesario
 
+## 👥 Contribuidores
+
+- **[Isidro Merayo](https://github.com/isidromerayo)** - Autor principal y desarrollador del TFG
+- **Kiro AI** - Asistente de desarrollo, configuración del monorepo y automatización
+
 ## 📄 Licencia
 
 Este proyecto es parte de un Trabajo de Fin de Grado (TFG) de la Universidad Internacional de La Rioja (UNIR).

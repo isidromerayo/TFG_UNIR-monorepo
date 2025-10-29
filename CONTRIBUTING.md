@@ -182,6 +182,24 @@ cd react && npm run dev -- --debug
 cd vue3 && npm run dev -- --debug
 ```
 
+## Contribuidores
+
+### Autor Principal
+- **Isidro Merayo** - [@isidromerayo](https://github.com/isidromerayo)
+  - Desarrollo del TFG UNIR
+  - Arquitectura del proyecto
+  - Implementación de todos los frameworks
+
+### Colaboradores
+- **Kiro AI** - Asistente de desarrollo
+  - Configuración del monorepo
+  - Scripts de automatización
+  - Documentación y CI/CD
+  - Optimización de workflows
+
 ## Contacto
 
-Para preguntas sobre el proyecto, contacta con el equipo de desarrollo o abre un issue en GitHub.
+Para preguntas sobre el proyecto:
+- 📧 Contacta con [@isidromerayo](https://github.com/isidromerayo)
+- 🐛 Abre un issue en GitHub para bugs o mejoras
+- 💡 Usa las Discussions para ideas y preguntas generales
