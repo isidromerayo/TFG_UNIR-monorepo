@@ -1,0 +1,38 @@
+name: Update Submodules
+
+on:
+  repository_dispatch:
+    types: [submodule-updated]
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    
+    # Permite que el workflow haga un push al repositorio
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout monorepo
+        uses: actions/checkout@v3
+        with:
+          # Necesitamos el token aquí para poder hacer push
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # Inicializa los submódulos durante el checkout
+          submodules: 'true'
+
+      - name: Update all submodules to the latest commit
+        run: |
+          git submodule update --remote --merge
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+          # Comprueba si hay cambios en los submódulos
+          if ! git diff-index --quiet HEAD; then
+            git commit -am "CI: Automatically update submodules"
+            git push
+          else
+            echo "No submodule changes to commit."
+          fi
