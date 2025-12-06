@@ -45,40 +45,18 @@ Los submodules en Git son **referencias a commits específicos**, no a ramas. Es
 
 #### Opción 3: Trigger desde Repos Individuales (Opcional)
 
-Para actualización inmediata, añade este workflow a cada repo individual:
+⚠️ **Estado**: NO configurado (requiere configuración adicional)
 
-**Archivo**: `.github/workflows/notify-monorepo.yml`
+Para actualización **instantánea** (~1 minuto) cuando se hace merge a main en repos individuales:
 
-```yaml
-name: Notify Monorepo
+**Requisitos:**
+1. Personal Access Token (PAT) con permisos `repo`
+2. Añadir PAT como secret `MONOREPO_PAT` en cada repo
+3. Crear workflow de notificación en cada repo
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    types: [closed]
-    branches:
-      - main
+📚 **Ver guía completa**: [SETUP_INSTANT_UPDATES.md](./SETUP_INSTANT_UPDATES.md)
 
-jobs:
-  notify:
-    if: github.event_name == 'push' || (github.event.pull_request.merged == true)
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger monorepo update
-        run: |
-          curl -X POST \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token ${{ secrets.MONOREPO_PAT }}" \
-            https://api.github.com/repos/isidromerayo/TFG_UNIR-monorepo/dispatches \
-            -d '{"event_type":"submodule-updated","client_payload":{"repo":"${{ github.repository }}","ref":"${{ github.ref }}"}}'
-```
-
-**Requisitos para Opción 3:**
-1. Crear un Personal Access Token (PAT) con permisos `repo`
-2. Añadirlo como secret `MONOREPO_PAT` en cada repo individual
-3. Añadir el workflow a cada repo
+**Recomendación**: Solo configurar si necesitas actualizaciones instantáneas. Para desarrollo normal, la actualización cada 6 horas es suficiente.
 
 ## 📋 Actualización Manual
 
