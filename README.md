@@ -42,16 +42,7 @@ cd backend
 
 La base de datos incluye usuarios de prueba precargados para facilitar el desarrollo y testing:
 
-**Usuarios Profesores (rol: P - pueden crear y gestionar cursos)**
-
-| Email | Contraseña | Nombre |
-|-------|-----------|--------|
-| `maria@localhost` | `1234` | María García Sánchez |
-| `juanantonio@localhost` | `1234` | Juan Antonio Ponferrada Dominguez |
-| `marta@localhost` | `1234` | Marta Toral Alonso |
-| `pedro@localhost` | `1234` | Pedro Villa Ledesma |
-
-**Usuarios Alumnos (rol: A - pueden inscribirse en cursos)**
+**Usuarios Activos** (estado: A - pueden acceder a la aplicación)
 
 | Email | Contraseña | Nombre |
 |-------|-----------|--------|
@@ -60,6 +51,15 @@ La base de datos incluye usuarios de prueba precargados para facilitar el desarr
 | `ines@localhost` | `1234` | Ines Boeza Alonso |
 | `isable@localhost` | `1234` | Isabel Fresnedo Noceda |
 | `c@example.com` | `1234` | Carla Canedo Castro |
+
+**Usuarios Pendientes** (estado: P - para testing de estados)
+
+| Email | Contraseña | Nombre |
+|-------|-----------|--------|
+| `maria@localhost` | `1234` | María García Sánchez |
+| `juanantonio@localhost` | `1234` | Juan Antonio Ponferrada Dominguez |
+| `marta@localhost` | `1234` | Marta Toral Alonso |
+| `pedro@localhost` | `1234` | Pedro Villa Ledesma |
 | `d@example.com` | `1234` | Diego Diaz Diez |
 | `c@demo.com` | `1234` | Clara Cedro Claro |
 | `m@example.com` | `1234` | Marta Martinez Marcos |
@@ -68,7 +68,7 @@ La base de datos incluye usuarios de prueba precargados para facilitar el desarr
 
 > **⚠️ Nota de seguridad**: Estos usuarios son solo para desarrollo y testing. En producción, las contraseñas deben estar hasheadas y seguir políticas de seguridad robustas.
 
-> **💡 Tip**: Usa diferentes usuarios para probar las funcionalidades específicas de cada rol. Los profesores pueden crear cursos, mientras que los alumnos pueden inscribirse y consumir contenido.
+> **💡 Tip**: Los usuarios **activos** pueden iniciar sesión normalmente. Los usuarios **pendientes** están desactivados y sirven para probar flujos de activación de cuentas.
 
 ### Frontend Angular (npm)
 ```bash
