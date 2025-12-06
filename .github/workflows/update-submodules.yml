@@ -1,8 +1,21 @@
 name: Update Submodules
 
 on:
+  # Trigger manual
+  workflow_dispatch:
+  
+  # Trigger desde otros repos
   repository_dispatch:
     types: [submodule-updated]
+  
+  # Trigger programado (cada 6 horas)
+  schedule:
+    - cron: '0 */6 * * *'  # Cada 6 horas
+  
+  # Trigger cuando se hace push a main (para verificar)
+  push:
+    branches:
+      - main
 
 jobs:
   update:
@@ -21,18 +34,52 @@ jobs:
           # Inicializa los submódulos durante el checkout
           submodules: 'true'
 
+      - name: Check current submodule status
+        run: |
+          echo "📊 Current submodule status:"
+          git submodule status
+          echo ""
+          echo "🔍 Checking for updates..."
+
       - name: Update all submodules to the latest commit
         run: |
           git submodule update --remote --merge
+          echo ""
+          echo "📊 Updated submodule status:"
+          git submodule status
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if ! git diff-index --quiet HEAD; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+            echo "✅ Submodule updates detected"
+            git status
+          else
+            echo "changes=false" >> $GITHUB_OUTPUT
+            echo "ℹ️ No submodule changes detected"
+          fi
 
       - name: Commit and push changes
+        if: steps.check_changes.outputs.changes == 'true'
         run: |
           git config user.name "GitHub Action"
           git config user.email "action@github.com"
-          # Comprueba si hay cambios en los submódulos
-          if ! git diff-index --quiet HEAD; then
-            git commit -am "CI: Automatically update submodules"
-            git push
-          else
-            echo "No submodule changes to commit."
-          fi
+          
+          # Crear mensaje de commit detallado
+          COMMIT_MSG="chore: auto-update submodules to latest versions"
+          echo "" >> commit_msg.txt
+          echo "$COMMIT_MSG" >> commit_msg.txt
+          echo "" >> commit_msg.txt
+          echo "Updated submodules:" >> commit_msg.txt
+          git diff --cached --name-only >> commit_msg.txt
+          
+          git commit -F commit_msg.txt
+          git push
+          
+          echo "✅ Submodules updated and pushed successfully"
+      
+      - name: No changes summary
+        if: steps.check_changes.outputs.changes == 'false'
+        run: |
+          echo "ℹ️ All submodules are already up to date"
