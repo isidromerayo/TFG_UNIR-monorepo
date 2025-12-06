@@ -67,7 +67,18 @@ pnpm dev
 
 ## 🔄 Actualizar Submodules
 
-Para obtener los últimos cambios de todos los proyectos:
+### Actualización Automática ⭐
+
+Los submodules se actualizan **automáticamente cada 6 horas** mediante GitHub Actions.
+
+También puedes disparar una actualización manual:
+1. Ve a la pestaña **Actions** en GitHub
+2. Selecciona **"Update Submodules"**
+3. Click en **"Run workflow"**
+
+### Actualización Manual
+
+Para actualizar manualmente en local:
 
 ```bash
 # Actualizar todos los submodules
@@ -76,6 +87,8 @@ git submodule update --remote
 # O usar el script helper
 ./scripts/update-all.sh
 ```
+
+📚 Ver [SUBMODULE_AUTOMATION.md](./SUBMODULE_AUTOMATION.md) para más detalles sobre la automatización.
 
 ## 🧪 Testing
 
