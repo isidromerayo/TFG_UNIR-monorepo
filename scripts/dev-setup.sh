@@ -31,6 +31,17 @@ if ! command -v npm &> /dev/null; then
     exit 1
 fi
 
+# Verificar pnpm (opcional pero recomendado para React y Vue3)
+if ! command -v pnpm &> /dev/null; then
+    echo "⚠️  pnpm no encontrado. Se recomienda instalarlo para React y Vue3."
+    echo "   Instalar con: npm install -g pnpm"
+    echo "   Los proyectos React y Vue3 usan pnpm para mejor gestión de dependencias."
+    USE_PNPM=false
+else
+    echo "✅ pnpm encontrado"
+    USE_PNPM=true
+fi
+
 echo "✅ Dependencias del sistema verificadas"
 
 # Instalar dependencias de cada proyecto
@@ -65,12 +76,18 @@ else
 fi
 
 echo ""
-echo "📦 Instalando dependencias de React..."
+echo "📦 Instalando dependencias de React (pnpm)..."
 if [ -d "react" ]; then
     cd react
     if [ -f "package.json" ]; then
-        npm install
-        echo "✅ React configurado"
+        if [ "$USE_PNPM" = true ]; then
+            pnpm install
+            echo "✅ React configurado con pnpm"
+        else
+            echo "⚠️  Usando npm como fallback (se recomienda pnpm)"
+            npm install
+            echo "✅ React configurado con npm"
+        fi
     else
         echo "⚠️  package.json no encontrado en react"
     fi
@@ -80,12 +97,18 @@ else
 fi
 
 echo ""
-echo "📦 Instalando dependencias de Vue3..."
+echo "📦 Instalando dependencias de Vue3 (pnpm)..."
 if [ -d "vue3" ]; then
     cd vue3
     if [ -f "package.json" ]; then
-        npm install
-        echo "✅ Vue3 configurado"
+        if [ "$USE_PNPM" = true ]; then
+            pnpm install
+            echo "✅ Vue3 configurado con pnpm"
+        else
+            echo "⚠️  Usando npm como fallback (se recomienda pnpm)"
+            npm install
+            echo "✅ Vue3 configurado con npm"
+        fi
     else
         echo "⚠️  package.json no encontrado en vue3"
     fi
@@ -102,14 +125,27 @@ echo "  cd backend && ./mvnw spring-boot:run"
 echo "  API: http://localhost:8080/api"
 echo "  Swagger: http://localhost:8080/swagger-ui.html"
 echo ""
-echo "Frontend Angular:"
+echo "Frontend Angular (npm):"
 echo "  cd angular && npm start"
 echo "  App: http://localhost:4200"
 echo ""
-echo "Frontend React:"
-echo "  cd react && npm run dev"
-echo "  App: http://localhost:3000"
-echo ""
-echo "Frontend Vue3:"
-echo "  cd vue3 && npm run dev"
-echo "  App: http://localhost:5173"
+if [ "$USE_PNPM" = true ]; then
+    echo "Frontend React (pnpm):"
+    echo "  cd react && pnpm dev"
+    echo "  App: http://localhost:3000"
+    echo ""
+    echo "Frontend Vue3 (pnpm):"
+    echo "  cd vue3 && pnpm dev"
+    echo "  App: http://localhost:5173"
+else
+    echo "Frontend React (npm - considera instalar pnpm):"
+    echo "  cd react && npm run dev"
+    echo "  App: http://localhost:3000"
+    echo ""
+    echo "Frontend Vue3 (npm - considera instalar pnpm):"
+    echo "  cd vue3 && npm run dev"
+    echo "  App: http://localhost:5173"
+    echo ""
+    echo "💡 Tip: Instala pnpm para mejor rendimiento:"
+    echo "   npm install -g pnpm"
+fi

@@ -159,7 +159,7 @@ jobs:
           fi
         done
 
-  # Angular Tests
+  # Angular Tests (uses npm)
   angular-tests:
     runs-on: ubuntu-latest
     steps:
@@ -200,7 +200,7 @@ jobs:
         path: angular/angular-audit.json
         retention-days: 30
 
-  # React Tests
+  # React Tests (uses pnpm)
   react-tests:
     runs-on: ubuntu-latest
     steps:
@@ -213,23 +213,34 @@ jobs:
       with:
         node-version: '20'
     
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 9
+    
     - name: Install React Dependencies
       run: |
         cd react
-        npm ci || npm install
+        pnpm install --frozen-lockfile
+    
+    - name: Run React Type Check
+      run: |
+        cd react
+        pnpm type-check || echo "React type-check completed with issues"
+      continue-on-error: true
     
     - name: Run React Tests
       run: |
         cd react
-        npm run test-headless-cc || echo "React tests completed with issues"
+        pnpm test-headless-cc || echo "React tests completed with issues"
       continue-on-error: true
     
     - name: React Security Audit
       run: |
         cd react
         echo "🔍 Running React security audit..."
-        npm audit --audit-level=moderate || echo "⚠️ React audit found issues"
-        npm audit --json > react-audit.json || true
+        pnpm audit --audit-level=moderate || echo "⚠️ React audit found issues"
+        pnpm audit --json > react-audit.json || true
       continue-on-error: true
     
     - name: Upload React Audit Report
@@ -240,7 +251,7 @@ jobs:
         path: react/react-audit.json
         retention-days: 30
 
-  # Vue3 Tests
+  # Vue3 Tests (uses pnpm)
   vue3-tests:
     runs-on: ubuntu-latest
     steps:
@@ -253,23 +264,34 @@ jobs:
       with:
         node-version: '20'
     
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 9
+    
     - name: Install Vue3 Dependencies
       run: |
         cd vue3
-        npm ci || npm install
+        pnpm install --frozen-lockfile
+    
+    - name: Run Vue3 Type Check
+      run: |
+        cd vue3
+        pnpm type-check || echo "Vue3 type-check completed with issues"
+      continue-on-error: true
     
     - name: Run Vue3 Tests
       run: |
         cd vue3
-        npm run test-headless-cc || echo "Vue3 tests completed with issues"
+        pnpm test-headless || echo "Vue3 tests completed with issues"
       continue-on-error: true
     
     - name: Vue3 Security Audit
       run: |
         cd vue3
         echo "🔍 Running Vue3 security audit..."
-        npm audit --audit-level=moderate || echo "⚠️ Vue3 audit found issues"
-        npm audit --json > vue3-audit.json || true
+        pnpm audit --audit-level=moderate || echo "⚠️ Vue3 audit found issues"
+        pnpm audit --json > vue3-audit.json || true
       continue-on-error: true
     
     - name: Upload Vue3 Audit Report
@@ -308,25 +330,30 @@ jobs:
         ./mvnw clean package -DskipTests
       continue-on-error: true
     
-    - name: Build Angular
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 9
+    
+    - name: Build Angular (npm)
       run: |
         cd angular
         npm install --legacy-peer-deps --force
         npm run build || echo "Angular build completed with warnings"
       continue-on-error: true
     
-    - name: Build React
+    - name: Build React (pnpm)
       run: |
         cd react
-        npm ci || npm install
-        npm run build || echo "React build completed with warnings"
+        pnpm install --frozen-lockfile
+        pnpm build || echo "React build completed with warnings"
       continue-on-error: true
     
-    - name: Build Vue3
+    - name: Build Vue3 (pnpm)
       run: |
         cd vue3
-        npm ci || npm install
-        npm run build || echo "Vue3 build completed with warnings"
+        pnpm install --frozen-lockfile
+        pnpm build || echo "Vue3 build completed with warnings"
       continue-on-error: true
     
     - name: Summary

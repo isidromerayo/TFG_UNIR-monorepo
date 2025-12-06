@@ -38,26 +38,32 @@ cd backend
 # Swagger UI: http://localhost:8080/swagger-ui.html
 ```
 
-### Frontend Angular
+### Frontend Angular (npm)
 ```bash
 cd angular
+npm install
 npm start
 # Aplicación disponible en: http://localhost:4200
 ```
 
-### Frontend React (Next.js)
+### Frontend React (Next.js) - **Migrado a pnpm** ✨
 ```bash
 cd react
-npm run dev
+pnpm install
+pnpm dev
 # Aplicación disponible en: http://localhost:3000
 ```
 
-### Frontend Vue 3
+### Frontend Vue 3 - **Migrado a pnpm** ✨
 ```bash
 cd vue3
-npm run dev
+pnpm install
+pnpm dev
 # Aplicación disponible en: http://localhost:5173
 ```
+
+> **Nota**: Los proyectos React y Vue3 han sido migrados a **pnpm** para mejor gestión de dependencias, 
+> mayor velocidad de instalación y menor uso de espacio en disco. Angular permanece con npm.
 
 ## 🔄 Actualizar Submodules
 
@@ -79,14 +85,14 @@ Cada proyecto tiene sus propios tests. Para ejecutar todos:
 # Backend
 cd backend && ./mvnw test
 
-# Angular
+# Angular (npm)
 cd angular && npm test
 
-# React
-cd react && npm test
+# React (pnpm)
+cd react && pnpm test
 
-# Vue3
-cd vue3 && npm run test
+# Vue3 (pnpm)
+cd vue3 && pnpm test-headless
 
 # Todos los tests
 ./scripts/test-all.sh
@@ -157,14 +163,14 @@ Los reportes se generan en `./security-reports/`:
 # Backend
 cd backend && ./mvnw clean package
 
-# Angular
+# Angular (npm)
 cd angular && npm run build
 
-# React
-cd react && npm run build
+# React (pnpm)
+cd react && pnpm build
 
-# Vue3
-cd vue3 && npm run build
+# Vue3 (pnpm)
+cd vue3 && pnpm build
 ```
 
 ## 🏗️ Arquitectura
@@ -191,13 +197,32 @@ Este proyecto implementa la misma funcionalidad (plataforma de cursos online) us
 - Búsqueda y filtros
 - Perfil de usuario
 
+## 🔄 Migraciones y Mejoras Recientes
+
+### Migración a pnpm (React y Vue3)
+Los proyectos React y Vue3 han sido migrados de npm a pnpm, obteniendo:
+- ⚡ **Instalación 2-3x más rápida** gracias al caché global
+- 💾 **Ahorro de espacio en disco** con enlaces simbólicos
+- 🔒 **Mayor seguridad** con lockfile estricto
+- 🎯 **Mejor gestión de dependencias** con workspace support
+
+### Infraestructura de Seguridad Multi-Capa
+Todos los proyectos frontend incluyen:
+- 🛡️ **GitHub Actions Security Workflow** con 5 herramientas de auditoría
+- 🤖 **Dependabot** configurado con agrupación inteligente
+- 📊 **Scripts locales** para auditoría multi-herramienta
+- 📝 **Documentación completa** de seguridad y actualización de dependencias
+
+Ver [SECURITY_STATUS.md](./SECURITY_STATUS.md) para el estado actual de seguridad.
+
 ## 📊 CI/CD
 
 El proyecto incluye GitHub Actions para:
-- Tests automatizados
-- Análisis de código (CodeQL)
-- Dependency checking (OWASP, Dependabot)
+- Tests automatizados (con soporte para npm y pnpm)
+- Análisis de seguridad multi-herramienta (Trivy, npm/pnpm audit)
+- Type checking (TypeScript)
 - Build verification
+- Dependency checking (Dependabot)
 
 ## 📝 Documentación
 

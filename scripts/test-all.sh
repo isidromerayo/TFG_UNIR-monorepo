@@ -47,13 +47,19 @@ else
     echo "⚠️  Directorio angular no encontrado"
 fi
 
-# Tests de React
+# Tests de React (pnpm)
 echo ""
-echo "⚛️  Testing React..."
+echo "⚛️  Testing React (pnpm)..."
 if [ -d "react" ]; then
     cd react
-    npm test -- --watchAll=false 2>/dev/null
-    react_result=$?
+    if command -v pnpm &> /dev/null; then
+        pnpm test-headless 2>/dev/null
+        react_result=$?
+    else
+        echo "⚠️  pnpm no encontrado, usando npm..."
+        npm test -- --watchAll=false 2>/dev/null
+        react_result=$?
+    fi
     show_result $react_result "React Tests"
     if [ $react_result -eq 0 ]; then ((passed_tests++)); fi
     ((total_tests++))
@@ -62,13 +68,19 @@ else
     echo "⚠️  Directorio react no encontrado"
 fi
 
-# Tests de Vue3
+# Tests de Vue3 (pnpm)
 echo ""
-echo "🟢 Testing Vue3..."
+echo "🟢 Testing Vue3 (pnpm)..."
 if [ -d "vue3" ]; then
     cd vue3
-    npm run test 2>/dev/null
-    vue_result=$?
+    if command -v pnpm &> /dev/null; then
+        pnpm test-headless 2>/dev/null
+        vue_result=$?
+    else
+        echo "⚠️  pnpm no encontrado, usando npm..."
+        npm run test 2>/dev/null
+        vue_result=$?
+    fi
     show_result $vue_result "Vue3 Tests"
     if [ $vue_result -eq 0 ]; then ((passed_tests++)); fi
     ((total_tests++))
