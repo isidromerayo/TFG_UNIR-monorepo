@@ -100,18 +100,11 @@ jobs:
           SUBMODULES=$(git diff --cached --name-only | grep -E '^(angular|backend|react|vue3)/' | cut -d'/' -f1 | sort -u | paste -sd ", " -)
           
           if [ -n "$SUBMODULES" ]; then
-            COMMIT_MSG="chore: auto-update submodules to latest versions
-
-Updated: $SUBMODULES
-
-[skip ci]"
+            git commit -m "chore: auto-update submodules to latest versions" -m "Updated: $SUBMODULES" -m "[skip ci]"
           else
-            COMMIT_MSG="chore: auto-update submodules to latest versions
-
-[skip ci]"
+            git commit -m "chore: auto-update submodules to latest versions" -m "[skip ci]"
           fi
           
-          git commit -m "$COMMIT_MSG"
           git push
           
           echo "✅ Submodules updated and pushed successfully"
