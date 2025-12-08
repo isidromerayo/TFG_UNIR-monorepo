@@ -43,7 +43,16 @@ jobs:
 
       - name: Update all submodules to the latest commit
         run: |
-          git submodule update --remote --merge
+          # Intentar actualizar con merge primero
+          if ! git submodule update --remote --merge; then
+            echo "⚠️ Merge failed, trying with rebase strategy..."
+            # Si falla, intentar con rebase
+            if ! git submodule update --remote --rebase; then
+              echo "⚠️ Rebase failed, using checkout strategy (will detach HEAD)..."
+              # Si también falla, usar checkout directo (esto siempre funciona)
+              git submodule update --remote
+            fi
+          fi
           echo ""
           echo "📊 Updated submodule status:"
           git submodule status
@@ -51,10 +60,15 @@ jobs:
       - name: Check for changes
         id: check_changes
         run: |
-          if ! git diff-index --quiet HEAD; then
+          # Añadir los cambios de submódulos al staging area
+          git add -A
+          
+          if ! git diff-index --quiet --cached HEAD; then
             echo "changes=true" >> $GITHUB_OUTPUT
             echo "✅ Submodule updates detected"
-            git status
+            echo ""
+            echo "📝 Changes to be committed:"
+            git diff --cached --name-status
           else
             echo "changes=false" >> $GITHUB_OUTPUT
             echo "ℹ️ No submodule changes detected"
@@ -66,15 +80,22 @@ jobs:
           git config user.name "GitHub Action"
           git config user.email "action@github.com"
           
-          # Crear mensaje de commit detallado
-          COMMIT_MSG="chore: auto-update submodules to latest versions"
-          echo "" >> commit_msg.txt
-          echo "$COMMIT_MSG" >> commit_msg.txt
-          echo "" >> commit_msg.txt
-          echo "Updated submodules:" >> commit_msg.txt
-          git diff --cached --name-only >> commit_msg.txt
+          # Crear mensaje de commit con lista de submódulos actualizados
+          SUBMODULES=$(git diff --cached --name-only | grep -E '^(angular|backend|react|vue3)/' | cut -d'/' -f1 | sort -u | paste -sd ", " -)
           
-          git commit -F commit_msg.txt
+          if [ -n "$SUBMODULES" ]; then
+            COMMIT_MSG="chore: auto-update submodules to latest versions
+
+Updated: $SUBMODULES
+
+[skip ci]"
+          else
+            COMMIT_MSG="chore: auto-update submodules to latest versions
+
+[skip ci]"
+          fi
+          
+          git commit -m "$COMMIT_MSG"
           git push
           
           echo "✅ Submodules updated and pushed successfully"
