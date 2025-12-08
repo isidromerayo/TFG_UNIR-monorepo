@@ -1,12 +1,16 @@
 [submodule "angular"]
 	path = angular
 	url = https://github.com/isidromerayo/TFG_UNIR-angular.git
+	branch = main
 [submodule "backend"]
 	path = backend
 	url = https://github.com/isidromerayo/TFG_UNIR-backend.git
+	branch = main
 [submodule "react"]
 	path = react
 	url = https://github.com/isidromerayo/TFG_UNIR-react.git
+	branch = main
 [submodule "vue3"]
 	path = vue3
 	url = https://github.com/isidromerayo/TFG_UNIR-vue3.git
+	branch = main

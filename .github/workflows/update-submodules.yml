@@ -43,16 +43,32 @@ jobs:
 
       - name: Update all submodules to the latest commit
         run: |
-          # Intentar actualizar con merge primero
-          if ! git submodule update --remote --merge; then
-            echo "⚠️ Merge failed, trying with rebase strategy..."
-            # Si falla, intentar con rebase
-            if ! git submodule update --remote --rebase; then
-              echo "⚠️ Rebase failed, using checkout strategy (will detach HEAD)..."
-              # Si también falla, usar checkout directo (esto siempre funciona)
-              git submodule update --remote
+          # Actualizar cada submódulo individualmente para mejor control
+          for submodule in angular backend react vue3; do
+            if [ -d "$submodule" ]; then
+              echo "🔄 Updating $submodule..."
+              cd "$submodule"
+              
+              # Obtener la rama configurada para el submódulo
+              BRANCH=$(git config -f ../.gitmodules submodule.$submodule.branch || echo "main")
+              
+              # Fetch los últimos cambios
+              git fetch origin
+              
+              # Checkout a la rama y pull
+              if git checkout "$BRANCH" 2>/dev/null; then
+                git pull origin "$BRANCH" --ff-only || git reset --hard origin/"$BRANCH"
+                echo "✅ $submodule updated to latest $BRANCH"
+              else
+                # Si no existe la rama localmente, hacer checkout desde origin
+                git checkout -B "$BRANCH" origin/"$BRANCH"
+                echo "✅ $submodule checked out to $BRANCH"
+              fi
+              
+              cd ..
             fi
-          fi
+          done
+          
           echo ""
           echo "📊 Updated submodule status:"
           git submodule status
