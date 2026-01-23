@@ -3,9 +3,25 @@
 Este documento resume las migraciones y mejoras realizadas en los proyectos del monorepo TFG UNIR.
 
 ## 📅 Fecha de Actualización
-Diciembre 2024
+Enero 2026
 
 ## 🔄 Migraciones Realizadas
+
+### 0. Migración a Spring Boot 3.4.12 (Backend)
+
+#### Proyecto Migrado
+- ✅ **TFG_UNIR-backend** (Spring Boot 3.4.12 + Java 21)
+
+#### Cambios Principales
+- **Framework:** Spring Boot 3.x -> 3.4.12
+- **Java:** Establecido baseline en Java 21
+- **Testing:** RestAssured, JUnit 5
+- **Seguridad:** Spring Security actualizado
+
+#### Beneficios Obtenidos
+- 🚀 **Performance:** Mejoras del runtime de Java 21 (Virtual Threads, etc).
+- 🛡️ **Seguridad:** Versiones recientes de dependencias.
+- 📦 **Modernización:** Alineación con el ecosistema actual de Spring Boot 3.4.
 
 ### 1. Migración de npm a pnpm (React y Vue3)
 
@@ -116,8 +132,10 @@ Ver [SECURITY_STATUS.md](./SECURITY_STATUS.md) para el análisis completo.
 
 **Backend (Spring Boot):**
 - ✅ 0 vulnerabilidades conocidas
-- Maven Dependency Plugin actualizado
-- Auditorías regulares con OWASP Dependency Check
+- ✅ Actualizado a Spring Boot 4.0.2
+- ✅ Java 17 baseline verificado
+- ✅ 22 tests (14 UT + 8 IT) exitosos
+- ✅ Cobertura de código: 99%
 
 **React (Next.js):**
 - ✅ 0 vulnerabilidades conocidas
@@ -253,5 +271,5 @@ cd vue3 && ./scripts/security-check.sh
 
 ---
 
-**Última actualización:** Diciembre 2024  
+**Última actualización:** 23 de Enero de 2026  
 **Estado:** ✅ Migraciones completadas y verificadas

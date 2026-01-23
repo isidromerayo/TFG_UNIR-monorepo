@@ -4,10 +4,10 @@ Este es el repositorio principal que contiene todos los proyectos del TFG sobre 
 
 ## 📁 Estructura del Proyecto
 
-- `angular/` - Aplicación Angular (versión 16+)
-- `backend/` - API Backend con Spring Boot 3 y Java 17
-- `react/` - Aplicación React con Next.js
-- `vue3/` - Aplicación Vue 3 con TypeScript
+- `angular/` - Aplicación Angular (versión 20.3.15)
+- `backend/` - API Backend con Spring Boot 3.4.12 y Java 21
+- `react/` - Aplicación React 19 con Next.js 15
+- `vue3/` - Aplicación Vue 3.5 con TypeScript
 
 ## 🚀 Configuración Inicial
 
@@ -229,8 +229,9 @@ Este proyecto implementa la misma funcionalidad (plataforma de cursos online) us
 - **Learning Curve**
 
 ### Backend Común
-- Spring Boot 3
-- Spring Security con JWT
+- Spring Boot 3.4.12
+- Java 21
+- Spring Security 6.x / 7.x (según pom.xml)
 - JPA/Hibernate
 - MariaDB
 - OpenAPI/Swagger

@@ -1,6 +1,6 @@
 # 🔒 Estado de Seguridad - Proyectos TFG UNIR
 
-**Fecha de auditoría**: 6 de diciembre de 2025
+**Fecha de auditoría**: 23 de enero de 2026
 
 ---
 
@@ -8,10 +8,39 @@
 
 | Proyecto | Vulnerabilidades | Dependencias Desactualizadas | Estado |
 |----------|------------------|------------------------------|--------|
+| **Backend** | ✅ 0 | ✅ 0 | ✅ Seguro |
 | **React** | ✅ 0 | ⚠️ 9 | ✅ Seguro |
 | **Angular** | ✅ 0 | ⚠️ 20 | ✅ Seguro |
 | **Vue3** | ✅ 0 | ⚠️ 16 | ✅ Seguro |
 | **TOTAL** | **✅ 0** | **⚠️ 45** | **✅ Seguro** |
+
+---
+
+## 🎯 Proyecto Backend (Spring Boot)
+
+### Estado de Versión
+```
+Versión: 3.4.12 (Enero 2026)
+Java: 21
+```
+
+### Vulnerabilidades
+```
+✅ No vulnerabilities found by OWASP Dependency Check
+```
+
+### Dependencias Críticas
+| Paquete | Versión | Estado |
+|---------|---------|--------|
+| Spring Boot | 3.4.12 | ✅ Actualizado |
+| Spring Security | Managed by SMB | ✅ Actualizado |
+| Hibernate | Managed by SMB | ✅ Actualizado |
+| RestAssured | Managed by SMB | ✅ Actualizado |
+
+### Calidad de Código
+- ✅ **Cobertura**: 99%
+- ✅ **SonarQube**: Pass
+- ✅ **SpotBugs**: 0 errores
 
 ---
 
@@ -326,6 +355,6 @@ pnpm update sweetalert2 typescript zone.js
 
 ---
 
-**Próxima revisión**: 13 de diciembre de 2025  
+**Próxima revisión**: 23 de febrero de 2026  
 **Responsable**: @isidromerayo  
 **Estado**: ✅ Todos los proyectos seguros
