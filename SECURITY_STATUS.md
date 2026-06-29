@@ -9,10 +9,10 @@
 | Proyecto | Vulnerabilidades | Dependencias Desactualizadas | Estado |
 |----------|------------------|------------------------------|--------|
 | **Backend** | ✅ 0 | ✅ 0 | ✅ Seguro |
-| **React** | ✅ 0 | ⚠️ 9 | ✅ Seguro |
-| **Angular** | ✅ 0 | ⚠️ 20 | ✅ Seguro |
-| **Vue3** | ✅ 0 | ⚠️ 16 | ✅ Seguro |
-| **TOTAL** | **✅ 0** | **⚠️ 45** | **✅ Seguro** |
+| **React** | ✅ 0 | ✅ 0 | ✅ Seguro |
+| **Angular** | ✅ 0 | ✅ 0 | ✅ Seguro |
+| **Vue3** | ✅ 0 | ✅ 0 | ✅ Seguro |
+| **TOTAL** | **✅ 0** | **✅ 0** | **✅ Seguro** |
 
 ---
 
@@ -20,7 +20,7 @@
 
 ### Estado de Versión
 ```
-Versión: 3.4.12 (Enero 2026)
+Versión: 3.5.9 (Enero 2026)
 Java: 21
 ```
 
@@ -32,7 +32,7 @@ Java: 21
 ### Dependencias Críticas
 | Paquete | Versión | Estado |
 |---------|---------|--------|
-| Spring Boot | 3.4.12 | ✅ Actualizado |
+| Spring Boot | 3.5.9 | ✅ Actualizado |
 | Spring Security | Managed by SMB | ✅ Actualizado |
 | Hibernate | Managed by SMB | ✅ Actualizado |
 | RestAssured | Managed by SMB | ✅ Actualizado |
@@ -51,49 +51,15 @@ Java: 21
 ✅ No known vulnerabilities found
 ```
 
-### Dependencias Desactualizadas (9)
-
-#### Actualizaciones Menores/Patches (Seguras)
-| Paquete | Actual | Última | Tipo |
-|---------|--------|--------|------|
-| @types/node | 24.0.3 | 24.10.1 | Minor |
-| eslint | 9.31.0 | 9.39.1 | Minor |
-| react | 19.1.0 | 19.2.1 | Patch |
-| react-dom | 19.1.0 | 19.2.1 | Patch |
-| typescript | 5.8.3 | 5.9.3 | Minor |
-
-#### Actualizaciones Mayores (Revisar Breaking Changes)
-| Paquete | Actual | Última | Tipo |
-|---------|--------|--------|------|
-| cypress | 14.5.4 | 15.7.1 | Major |
-| eslint-config-next | 15.4.8 | 16.0.7 | Major |
-| next | 15.4.8 | 16.0.7 | Major |
+### Estado de Versión
+- **Next.js**: 16.1.1 (Actualizado)
+- **React**: 19.2.3 (Actualizado)
+- **TypeScript**: 5.9.3 (Actualizado)
 
 ### Recomendaciones
-
-**Actualizaciones Seguras** (ejecutar ahora):
-```bash
-cd TFG_UNIR-react
-pnpm update @types/node eslint react react-dom typescript
-```
-
-**Actualizaciones Mayores** (revisar changelog primero):
-```bash
-# Next.js 16 - REVISAR BREAKING CHANGES
-# https://nextjs.org/docs/app/building-your-application/upgrading/version-16
-pnpm update next eslint-config-next --latest
-
-# Cypress 15 - REVISAR CHANGELOG
-# https://docs.cypress.io/guides/references/changelog
-pnpm update cypress --latest
-```
-
-**Verificar después de actualizar**:
-```bash
-pnpm lint
-pnpm test-headless
-pnpm build
-```
+- ✅ **Next.js 16**: Implementado
+- ✅ **TypeScript 5.9**: Implementado
+- 🔄 Mantener monitoreo de nuevas versiones de Cypress y ESLint.
 
 ---
 
@@ -104,58 +70,15 @@ pnpm build
 ✅ No known vulnerabilities found
 ```
 
-### Dependencias Desactualizadas (20)
-
-#### Actualizaciones Menores/Patches (Seguras)
-| Paquete | Actual | Última | Tipo |
-|---------|--------|--------|------|
-| sweetalert2 | 11.4.8 | 11.26.4 | Minor |
-| typescript | 5.8.3 | 5.9.3 | Minor |
-| zone.js | 0.15.1 | 0.16.0 | Minor |
-
-#### Actualizaciones Mayores (Revisar Breaking Changes)
-| Paquete | Actual | Última | Tipo | Nota |
-|---------|--------|--------|------|------|
-| @angular/* | 20.3.15 | 21.0.3 | Major | Angular 21 |
-| @angular/cli | 20.3.13 | 21.0.2 | Major | Angular 21 |
-| @angular-devkit/build-angular | 20.3.13 | 21.0.2 | Major | Angular 21 |
-| @sweetalert2/ngx-sweetalert2 | 12.4.0 | 14.1.0 | Major | |
-| @types/jasmine | 4.6.5 | 5.1.13 | Major | |
-| @cypress/schematic | 2.5.2 | 4.3.0 | Major | |
-| cypress | 13.17.0 | 15.7.1 | Major | |
-| jasmine-core | 4.6.1 | 5.13.0 | Major | |
+### Estado de Versión
+- **Angular**: 21.1.0 (Actualizado)
+- **TypeScript**: 5.9.3 (Actualizado)
+- **Cypress**: 15.9.0 (Actualizado)
 
 ### Recomendaciones
-
-**Actualizaciones Seguras** (ejecutar ahora):
-```bash
-cd TFG_UNIR-angular
-pnpm update sweetalert2 typescript zone.js
-```
-
-**Actualizaciones Mayores** (revisar changelog primero):
-```bash
-# Angular 21 - REVISAR BREAKING CHANGES
-# https://angular.dev/update-guide
-# Usar Angular Update Guide: https://update.angular.io/
-pnpm update @angular/core @angular/cli --latest
-
-# Cypress 15 - REVISAR CHANGELOG
-pnpm update cypress @cypress/schematic --latest
-
-# Jasmine 5 - REVISAR CHANGELOG
-pnpm update jasmine-core @types/jasmine --latest
-
-# SweetAlert2 - REVISAR CHANGELOG
-pnpm update @sweetalert2/ngx-sweetalert2 --latest
-```
-
-**Verificar después de actualizar**:
-```bash
-pnpm lint
-pnpm test
-pnpm build
-```
+- ✅ **Angular 21**: Implementado
+- ✅ **TypeScript 5.9**: Implementado
+- 🔄 Explorar la migración a componentes standalone y el uso de signals.
 
 ---
 
@@ -166,87 +89,17 @@ pnpm build
 ✅ No known vulnerabilities found
 ```
 
-### Dependencias Desactualizadas (16)
-
-#### Deprecadas (Acción Requerida)
-| Paquete | Actual | Estado |
-|---------|--------|--------|
-| @types/cypress | 1.1.6 | ⚠️ **DEPRECATED** - Cypress provee sus propios tipos |
-
-**Acción**: Remover `@types/cypress`:
-```bash
-cd TFG_UNIR-vue3
-pnpm remove @types/cypress
-```
-
-#### Actualizaciones Menores/Patches (Seguras)
-| Paquete | Actual | Última | Tipo |
-|---------|--------|--------|------|
-| eslint-plugin-vue | 10.3.0 | 10.6.2 | Minor |
-| prettier | 3.6.2 | 3.7.4 | Minor |
-| typescript | 5.8.3 | 5.9.3 | Minor |
-| @vue/tsconfig | 0.7.0 | 0.8.1 | Minor |
-
-#### Actualizaciones Mayores (Revisar Breaking Changes)
-| Paquete | Actual | Última | Tipo |
-|---------|--------|--------|------|
-| @types/jsdom | 21.1.7 | 27.0.0 | Major |
-| @types/testing-library__jest-dom | 5.14.9 | 6.0.0 | Major |
-| @vitejs/plugin-vue | 5.2.4 | 6.0.2 | Major |
-| @vitest/coverage-v8 | 3.2.4 | 4.0.15 | Major |
-| @vitest/ui | 3.2.4 | 4.0.15 | Major |
-| cypress | 14.5.4 | 15.7.1 | Major |
-| jsdom | 26.1.0 | 27.2.0 | Major |
-| vite | 6.4.1 | 7.2.6 | Major |
-| vite-plugin-vue-devtools | 7.7.9 | 8.0.5 | Major |
-| vitest | 3.2.4 | 4.0.15 | Major |
-| vue-tsc | 2.2.12 | 3.1.6 | Major |
+### Estado de Versión
+- **Vue**: 3.5.26 (Actualizado)
+- **Vite**: 7.3.0 (Actualizado)
+- **Vitest**: 4.0.16 (Actualizado)
+- **TypeScript**: 5.9.3 (Actualizado)
 
 ### Recomendaciones
-
-**Acción Inmediata** (remover deprecado):
-```bash
-cd TFG_UNIR-vue3
-pnpm remove @types/cypress
-git add package.json pnpm-lock.yaml
-git commit -m "chore: remove deprecated @types/cypress"
-```
-
-**Actualizaciones Seguras** (ejecutar ahora):
-```bash
-pnpm update eslint-plugin-vue prettier typescript @vue/tsconfig
-```
-
-**Actualizaciones Mayores** (revisar changelog primero):
-```bash
-# Vite 7 - REVISAR BREAKING CHANGES
-# https://vitejs.dev/guide/migration
-pnpm update vite @vitejs/plugin-vue vite-plugin-vue-devtools --latest
-
-# Vitest 4 - REVISAR CHANGELOG
-# https://vitest.dev/guide/migration
-pnpm update vitest @vitest/ui @vitest/coverage-v8 --latest
-
-# Cypress 15 - REVISAR CHANGELOG
-pnpm update cypress --latest
-
-# jsdom 27 - REVISAR CHANGELOG
-pnpm update jsdom @types/jsdom --latest
-
-# vue-tsc 3 - REVISAR CHANGELOG
-pnpm update vue-tsc --latest
-
-# Testing Library - REVISAR CHANGELOG
-pnpm update @types/testing-library__jest-dom --latest
-```
-
-**Verificar después de actualizar**:
-```bash
-pnpm type-check
-pnpm lint
-pnpm test-headless
-pnpm build
-```
+- ✅ **Vite 7**: Implementado
+- ✅ **Vitest 4**: Implementado
+- ✅ **Remover @types/cypress deprecado**: Completado
+- 🔄 Aumentar la cobertura de tests unitarios y de componentes.
 
 ---
 

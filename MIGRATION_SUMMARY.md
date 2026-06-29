@@ -7,13 +7,13 @@ Enero 2026
 
 ## 🔄 Migraciones Realizadas
 
-### 0. Migración a Spring Boot 3.4.12 (Backend)
+### 0. Migración a Spring Boot 3.5.9 (Backend)
 
 #### Proyecto Migrado
-- ✅ **TFG_UNIR-backend** (Spring Boot 3.4.12 + Java 21)
+- ✅ **TFG_UNIR-backend** (Spring Boot 3.5.9 + Java 21)
 
 #### Cambios Principales
-- **Framework:** Spring Boot 3.x -> 3.4.12
+- **Framework:** Spring Boot 3.x -> 3.5.9
 - **Java:** Establecido baseline en Java 21
 - **Testing:** RestAssured, JUnit 5
 - **Seguridad:** Spring Security actualizado
@@ -132,8 +132,8 @@ Ver [SECURITY_STATUS.md](./SECURITY_STATUS.md) para el análisis completo.
 
 **Backend (Spring Boot):**
 - ✅ 0 vulnerabilidades conocidas
-- ✅ Actualizado a Spring Boot 4.0.2
-- ✅ Java 17 baseline verificado
+- ✅ Actualizado a Spring Boot 3.5.9
+- ✅ Java 21 baseline verificado
 - ✅ 22 tests (14 UT + 8 IT) exitosos
 - ✅ Cobertura de código: 99%
 
