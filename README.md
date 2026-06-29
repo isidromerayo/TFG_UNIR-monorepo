@@ -4,8 +4,8 @@ Este es el repositorio principal que contiene todos los proyectos del TFG sobre 
 
 ## 📁 Estructura del Proyecto
 
-- `angular/` - Aplicación Angular (versión 20.3.15)
-- `backend/` - API Backend con Spring Boot 3.5.9 y Java 21
+- `angular/` - Aplicación Angular (versión 21.2.11)
+- `backend/` - API Backend con Spring Boot 3.5.16 y Java 21
 - `react/` - Aplicación React 19 con Next.js 16
 - `vue3/` - Aplicación Vue 3.5 con TypeScript
 
