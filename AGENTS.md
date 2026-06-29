@@ -17,10 +17,10 @@ Para instrucciones detalladas, reglas de codificación y comandos específicos, 
 
 | Proyecto | Tecnología Principal | Versión Actual | Ruta a Docs |
 |----------|----------------------|----------------|-------------|
-| **Backend** | Spring Boot / Java | 3.4.12 / 21 | [backend/AGENTS.md](./backend/AGENTS.md) |
-| **Angular** | Angular / TypeScript | 20.3.15 | [angular/AGENTS.md](./angular/AGENTS.md) |
-| **React** | Next.js / React | 15.3.4 / 19.1.0 | [react/AGENTS.md](./react/AGENTS.md) |
-| **Vue3** | Vue 3 / Vite | 3.5.25 / 6.4.1 | [vue3/AGENTS.md](./vue3/AGENTS.md) |
+| **Backend** | Spring Boot / Java | 3.5.16 / 21 | [backend/AGENTS.md](./backend/AGENTS.md) |
+| **Angular** | Angular / TypeScript | 21.2.11 | [angular/AGENTS.md](./angular/AGENTS.md) |
+| **React** | Next.js / React | 16.2.4 / 19.2.4 | [react/AGENTS.md](./react/AGENTS.md) |
+| **Vue3** | Vue 3 / Vite | 3.5.33 / 7.3.2 | [vue3/AGENTS.md](./vue3/AGENTS.md) |
 
 > **⚠️ IMPORTANTE**: Antes de realizar cambios en un submódulo, LEE SIEMPRE su archivo `AGENTS.md` específico.
 
@@ -60,8 +60,8 @@ Ejecuta un análisis de seguridad en todos los proyectos:
 ## 🛠️ Tecnologías Comunes
 
 - **Gestión de Paquetes (Frontend)**: `pnpm` es el estándar para React y Vue3. Angular utiliza `pnpm` (versión 10.24.0). Verifica siempre el `package.json` local.
-- **Base de Datos**: MariaDB para producción, H2 para tests (Backend).
+- **Base de Datos**: PostgreSQL para producción, H2 para tests (Backend).
 - **CI/CD**: GitHub Actions configurado en `.github/workflows`.
 
 ---
-**Última actualización de este índice:** Enero 2026
+**Última actualización de este índice:** Junio 2026

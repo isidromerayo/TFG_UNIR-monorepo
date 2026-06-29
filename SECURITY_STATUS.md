@@ -1,6 +1,6 @@
 # 🔒 Estado de Seguridad - Proyectos TFG UNIR
 
-**Fecha de auditoría**: 23 de enero de 2026
+**Fecha de auditoría**: 29 de junio de 2026
 
 ---
 
@@ -20,7 +20,7 @@
 
 ### Estado de Versión
 ```
-Versión: 3.5.9 (Enero 2026)
+Versión: 3.5.16 (Junio 2026)
 Java: 21
 ```
 
@@ -32,7 +32,7 @@ Java: 21
 ### Dependencias Críticas
 | Paquete | Versión | Estado |
 |---------|---------|--------|
-| Spring Boot | 3.5.9 | ✅ Actualizado |
+| Spring Boot | 3.5.16 | ✅ Actualizado |
 | Spring Security | Managed by SMB | ✅ Actualizado |
 | Hibernate | Managed by SMB | ✅ Actualizado |
 | RestAssured | Managed by SMB | ✅ Actualizado |
@@ -52,8 +52,8 @@ Java: 21
 ```
 
 ### Estado de Versión
-- **Next.js**: 16.1.1 (Actualizado)
-- **React**: 19.2.3 (Actualizado)
+- **Next.js**: 16.2.4 (Actualizado)
+- **React**: 19.2.4 (Actualizado)
 - **TypeScript**: 5.9.3 (Actualizado)
 
 ### Recomendaciones
@@ -71,7 +71,7 @@ Java: 21
 ```
 
 ### Estado de Versión
-- **Angular**: 21.1.0 (Actualizado)
+- **Angular**: 21.2.11 (Actualizado)
 - **TypeScript**: 5.9.3 (Actualizado)
 - **Cypress**: 15.9.0 (Actualizado)
 
@@ -90,8 +90,8 @@ Java: 21
 ```
 
 ### Estado de Versión
-- **Vue**: 3.5.26 (Actualizado)
-- **Vite**: 7.3.0 (Actualizado)
+- **Vue**: 3.5.33 (Actualizado)
+- **Vite**: 7.3.2 (Actualizado)
 - **Vitest**: 4.0.16 (Actualizado)
 - **TypeScript**: 5.9.3 (Actualizado)
 
@@ -186,20 +186,17 @@ pnpm update sweetalert2 typescript zone.js
 
 ### Acciones Recomendadas
 
-**Inmediato** (hoy):
-1. Remover `@types/cypress` deprecado en Vue3
-2. Actualizar TypeScript a 5.9.3 en los 3 proyectos
-3. Actualizar herramientas de linting
+**Completado** ✅:
+1. ✅ Remover `@types/cypress` deprecado en Vue3
+2. ✅ TypeScript 5.9.3 en los 3 proyectos
+3. ✅ Cypress v15 en los 3 proyectos
+4. ✅ Vite 7 y Vitest 4 en Vue3
+5. ✅ Next.js 16 (React)
+6. ✅ Angular 21 (Angular)
 
-**Corto Plazo** (esta semana):
-1. Actualizar Cypress a v15 en los 3 proyectos
-2. Actualizar Vite a v7 en Vue3
-3. Actualizar Vitest a v4 en Vue3
-
-**Medio Plazo** (próximo mes):
-1. Evaluar actualización a Next.js 16 (React)
-2. Evaluar actualización a Angular 21 (Angular)
-3. Revisar y aplicar actualizaciones menores pendientes
+**Monitoreo Continuo**:
+1. 🔄 Mantener dependencias actualizadas vía Dependabot
+2. 🔄 Revisar PRs de Dependabot semanalmente
 
 ### Monitoreo
 - ✅ Dependabot activo y generando PRs
@@ -208,6 +205,6 @@ pnpm update sweetalert2 typescript zone.js
 
 ---
 
-**Próxima revisión**: 23 de febrero de 2026  
+**Próxima revisión**: 29 de julio de 2026  
 **Responsable**: @isidromerayo  
 **Estado**: ✅ Todos los proyectos seguros

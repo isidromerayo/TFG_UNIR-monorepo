@@ -26,7 +26,7 @@ Enero 2026
 ### 1. Migración de npm a pnpm (React y Vue3)
 
 #### Proyectos Migrados
-- ✅ **TFG_UNIR-react** (Next.js 15)
+- ✅ **TFG_UNIR-react** (Next.js 16)
 - ✅ **TFG_UNIR-vue3** (Vue 3 + TypeScript)
 
 #### Proyecto NO Migrado
@@ -139,18 +139,22 @@ Ver [SECURITY_STATUS.md](./SECURITY_STATUS.md) para el análisis completo.
 
 **React (Next.js):**
 - ✅ 0 vulnerabilidades conocidas
-- Next.js actualizado a 15.4.8 (vulnerabilidad crítica corregida)
-- 9 dependencias desactualizadas (no críticas)
+- Next.js actualizado a 16.2.4 (vulnerabilidad crítica corregida)
+- 0 dependencias desactualizadas
 
 **Angular:**
 - ✅ 0 vulnerabilidades conocidas
-- 20 dependencias desactualizadas (no críticas)
-- Infraestructura de seguridad implementada
+- Angular actualizado a 21.2.11
+- 0 dependencias desactualizadas
 
 **Vue3:**
 - ✅ 0 vulnerabilidades conocidas
-- 16 dependencias desactualizadas (no críticas)
+- Vue 3.5.33, Vite 7.3.2, Vitest 4.x
+- 0 dependencias desactualizadas
 - TypeScript actualizado a 5.9.3
+- Migración a Pinia (desde Vuex)
+- ESLint Flat Config
+- Cobertura de tests >95%
 
 ## 🔧 Cambios en CI/CD del Monorepo
 
@@ -271,5 +275,5 @@ cd vue3 && ./scripts/security-check.sh
 
 ---
 
-**Última actualización:** 23 de Enero de 2026  
+**Última actualización:** 29 de Junio de 2026  
 **Estado:** ✅ Migraciones completadas y verificadas
