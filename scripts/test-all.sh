@@ -32,13 +32,19 @@ else
     echo "⚠️  Directorio backend no encontrado"
 fi
 
-# Tests de Angular
+# Tests de Angular (pnpm)
 echo ""
-echo "🅰️  Testing Angular..."
+echo "🅰️  Testing Angular (pnpm)..."
 if [ -d "angular" ]; then
     cd angular
-    npm test -- --watch=false --browsers=ChromeHeadless 2>/dev/null
-    angular_result=$?
+    if command -v pnpm &> /dev/null; then
+        pnpm run test-headless 2>/dev/null
+        angular_result=$?
+    else
+        echo "⚠️  pnpm no encontrado, usando npm..."
+        npm test -- --watch=false --browsers=ChromeHeadless 2>/dev/null
+        angular_result=$?
+    fi
     show_result $angular_result "Angular Tests"
     if [ $angular_result -eq 0 ]; then ((passed_tests++)); fi
     ((total_tests++))

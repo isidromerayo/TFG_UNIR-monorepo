@@ -1,13 +1,47 @@
 # TFG UNIR - Frameworks Frontend JavaScript: Análisis y estudio práctico
 
+## 📊 Calidad de Código - SonarQube
+
+| Proyecto | Quality Gate | Coverage |
+|----------|--------------|----------|
+| **Backend** | [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=isidromerayo_TFG_UNIR-backend&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=isidromerayo_TFG_UNIR-backend) | [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=isidromerayo_TFG_UNIR-backend&metric=coverage)](https://sonarcloud.io/summary/new_code?id=isidromerayo_TFG_UNIR-backend) |
+| **Angular** | [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=isidromerayo_TFG_UNIR-angular&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=isidromerayo_TFG_UNIR-angular) | [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=isidromerayo_TFG_UNIR-angular&metric=coverage)](https://sonarcloud.io/summary/new_code?id=isidromerayo_TFG_UNIR-angular) |
+| **React** | [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=isidromerayo_TFG_UNIR-react&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=isidromerayo_TFG_UNIR-react) | [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=isidromerayo_TFG_UNIR-react&metric=coverage)](https://sonarcloud.io/summary/new_code?id=isidromerayo_TFG_UNIR-react) |
+| **Vue3** | [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=isidromerayo_TFG_UNIR-vue3&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=isidromerayo_TFG_UNIR-vue3) | [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=isidromerayo_TFG_UNIR-vue3&metric=coverage)](https://sonarcloud.io/summary/new_code?id=isidromerayo_TFG_UNIR-vue3) |
+
+# Universidad Internacional de La Rioja
+
+## Escuela Superior de Ingeniería y Tecnología 
+
+### Grado en Ingeniería Informática
+
+#### TFG: Frameworks frontend JavaScript: Análisis y estudio práctico
+
+##### Monorepo
+
+## 📅 Ciclo de Vida de los Frameworks
+
+Este monorepo agrupa las tecnologías del TFG; cada una tiene su propio ciclo de vida y política de soporte:
+
+| Proyecto | Tecnología | Versión | Estado | Fin de soporte |
+|----------|-----------|---------|--------|----------------|
+| **Backend** | Spring Boot | 3.5.16 | Soporte OSS finalizado | 30 de Junio 2026 |
+| **Angular** | Angular | 21.2.19 | LTS | ~Junio 2027 |
+| **React** | React | 19.2.8 | Estable (SemVer, sin EOL fijo) | - |
+| **Vue3** | Vue | 3.5.33 | Estable / Actual | - |
+
+Detalles completos del ciclo de vida de cada tecnología en el README de cada proyecto.
+
+## 🚀 Descripción
+
 Este es el repositorio principal que contiene todos los proyectos del TFG sobre frameworks frontend JavaScript.
 
 ## 📁 Estructura del Proyecto
 
-- `angular/` - Aplicación Angular (versión 21.2.11)
+- `angular/` - Aplicación Angular (versión 21.2.19)
 - `backend/` - API Backend con Spring Boot 3.5.16 y Java 21
-- `react/` - Aplicación React 19 con Next.js 16
-- `vue3/` - Aplicación Vue 3.5 con TypeScript
+- `react/` - Aplicación React 19.2.8 con Next.js 16.2.12
+- `vue3/` - Aplicación Vue 3.5.33 con TypeScript
 
 ## 🚀 Configuración Inicial
 
@@ -70,11 +104,11 @@ La base de datos incluye usuarios de prueba precargados para facilitar el desarr
 
 > **💡 Tip**: Los usuarios **activos** pueden iniciar sesión normalmente. Los usuarios **pendientes** están desactivados y sirven para probar flujos de activación de cuentas.
 
-### Frontend Angular (npm)
+### Frontend Angular (pnpm)
 ```bash
 cd angular
-npm install
-npm start
+pnpm install
+pnpm start
 # Aplicación disponible en: http://localhost:4200
 ```
 
@@ -94,8 +128,8 @@ pnpm dev
 # Aplicación disponible en: http://localhost:5173
 ```
 
-> **Nota**: Los proyectos React y Vue3 han sido migrados a **pnpm** para mejor gestión de dependencias, 
-> mayor velocidad de instalación y menor uso de espacio en disco. Angular permanece con npm.
+> **Nota**: Los tres frontends (Angular, React y Vue3) usan **pnpm** como gestor de dependencias para mejor gestión, 
+> mayor velocidad de instalación y menor uso de espacio en disco.
 
 ## 🔄 Actualizar Submodules
 
@@ -130,11 +164,11 @@ Cada proyecto tiene sus propios tests. Para ejecutar todos:
 # Backend
 cd backend && ./mvnw test
 
-# Angular (npm)
-cd angular && npm test
+# Angular (pnpm)
+cd angular && pnpm run test-headless
 
 # React (pnpm)
-cd react && pnpm test
+cd react && pnpm test-headless
 
 # Vue3 (pnpm)
 cd vue3 && pnpm test-headless
@@ -167,10 +201,12 @@ podman run --rm -v $(pwd):/workspace docker.io/aquasec/trivy:latest fs --format 
 # Usar imagen con Docker manualmente
 docker run --rm -v $(pwd):/workspace docker.io/aquasec/trivy:latest fs --format table /workspace/backend
 
-# Análisis complementario con npm audit
-cd angular && npm audit
-cd react && npm audit  
-cd vue3 && npm audit
+# Análisis complementario con pnpm audit
+cd angular && pnpm audit
+cd vue3 && pnpm audit
+
+# React: el endpoint de pnpm audit está retirado (HTTP 410) - usar pnpm outdated
+cd react && pnpm outdated
 ```
 
 ### Reportes de Seguridad
@@ -190,7 +226,7 @@ Los reportes se generan en `./security-reports/`:
 - `vue3-trivy-report.txt` - Resumen textual de Vue3
 
 **Reportes Complementarios:**
-- `*-npm-audit.json` - Auditorías npm de cada frontend
+- `*-pnpm-audit.json` - Auditorías pnpm de cada frontend
 
 ### Ventajas de usar Trivy con Contenedores (Podman/Docker)
 - ✅ **Sin instalación**: No requiere instalar Trivy localmente
@@ -208,8 +244,8 @@ Los reportes se generan en `./security-reports/`:
 # Backend
 cd backend && ./mvnw clean package
 
-# Angular (npm)
-cd angular && npm run build
+# Angular (pnpm)
+cd angular && pnpm run build
 
 # React (pnpm)
 cd react && pnpm build
@@ -245,8 +281,8 @@ Este proyecto implementa la misma funcionalidad (plataforma de cursos online) us
 
 ## 🔄 Migraciones y Mejoras Recientes
 
-### Migración a pnpm (React y Vue3)
-Los proyectos React y Vue3 han sido migrados de npm a pnpm, obteniendo:
+### Migración a pnpm (Angular, React y Vue3)
+Los proyectos frontend (Angular, React y Vue3) han sido migrados de npm a pnpm, obteniendo:
 - ⚡ **Instalación 2-3x más rápida** gracias al caché global
 - 💾 **Ahorro de espacio en disco** con enlaces simbólicos
 - 🔒 **Mayor seguridad** con lockfile estricto
@@ -264,8 +300,8 @@ Ver [SECURITY_STATUS.md](./SECURITY_STATUS.md) para el estado actual de segurida
 ## 📊 CI/CD
 
 El proyecto incluye GitHub Actions para:
-- Tests automatizados (con soporte para npm y pnpm)
-- Análisis de seguridad multi-herramienta (Trivy, npm/pnpm audit)
+- Tests automatizados (con pnpm en los frontends y Maven en el backend)
+- Análisis de seguridad multi-herramienta (Trivy, pnpm audit)
 - Type checking (TypeScript)
 - Build verification
 - Dependency checking (Dependabot)
@@ -293,9 +329,3 @@ Cada subproyecto puede desarrollarse independientemente:
 ## 📄 Licencia
 
 Este proyecto es parte de un Trabajo de Fin de Grado (TFG) de la Universidad Internacional de La Rioja (UNIR).
-
----
-
-**Universidad Internacional de La Rioja**  
-**Escuela Superior de Ingeniería y Tecnología**  
-**Grado en Ingeniería Informática**
