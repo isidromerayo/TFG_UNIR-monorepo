@@ -80,7 +80,7 @@ La base de datos incluye usuarios de prueba precargados para facilitar el desarr
 
 | Email | Contraseña | Nombre |
 |-------|-----------|--------|
-| `helena@localhost` | `1234` | Helena García Sánchez |
+| `helena@localhost` | `1234` | Helena Fabero Sánchez |
 | `carlos@localhost` | `1234` | Carlos Toreno Sil |
 | `ines@localhost` | `1234` | Ines Boeza Alonso |
 | `isable@localhost` | `1234` | Isabel Fresnedo Noceda |
@@ -90,12 +90,12 @@ La base de datos incluye usuarios de prueba precargados para facilitar el desarr
 
 | Email | Contraseña | Nombre |
 |-------|-----------|--------|
-| `maria@localhost` | `1234` | María García Sánchez |
+| `maria@localhost` | `1234` | María Villafranca Sánchez |
 | `juanantonio@localhost` | `1234` | Juan Antonio Ponferrada Dominguez |
 | `marta@localhost` | `1234` | Marta Toral Alonso |
 | `pedro@localhost` | `1234` | Pedro Villa Ledesma |
-| `d@example.com` | `1234` | Diego Diaz Diez |
-| `c@demo.com` | `1234` | Clara Cedro Claro |
+| `d@example.com` | `1234` | Diego Diaz Carracedelo |
+| `c@demo.com` | `1234` | Clara Cedro Igüeña |
 | `m@example.com` | `1234` | Marta Martinez Marcos |
 | `Kathryne1@example.com` | `1234` | Krista Frami |
 | `Alva_Streich@example.net` | `TFG_1234` | Jevon Harber |
