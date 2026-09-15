@@ -59,9 +59,9 @@ Ejecuta un análisis de seguridad en todos los proyectos:
 
 ## 🛠️ Tecnologías Comunes
 
-- **Gestión de Paquetes (Frontend)**: `pnpm` es el estándar para React y Vue3. Angular utiliza `pnpm` (versión 10.24.0). Verifica siempre el `package.json` local.
+- **Gestión de Paquetes (Frontend)**: `pnpm` es el estándar para React y Vue3. Angular utiliza `pnpm` (versión 10.17.1). Verifica siempre el `package.json` local. La versión de pnpm está fijada en los 3 frontends vía `packageManager` en su `package.json` (y `version:` en los workflows del monorepo), resuelta con corepack.
 - **Base de Datos**: PostgreSQL para producción, H2 para tests (Backend).
 - **CI/CD**: GitHub Actions configurado en `.github/workflows`.
 
 ---
-**Última actualización de este índice:** Junio 2026
+**Última actualización de este índice:** Sep 2026 (pnpm unificada a 10.17.1)

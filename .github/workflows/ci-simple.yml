@@ -159,7 +159,7 @@ jobs:
           fi
         done
 
-  # Angular Tests (uses npm)
+  # Angular Tests (uses pnpm)
   angular-tests:
     runs-on: ubuntu-latest
     steps:
@@ -170,26 +170,30 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '20'
+        node-version: '22'
+    
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 10.17.1
     
     - name: Install Angular Dependencies
       run: |
         cd angular
-        npm install --legacy-peer-deps --force
-      continue-on-error: true
-    
+        pnpm install --frozen-lockfile
+      
     - name: Run Angular Tests
       run: |
         cd angular
-        npm run test-headless-cc || echo "Angular tests completed with issues"
+        pnpm test-headless-cc || echo "Angular tests completed with issues"
       continue-on-error: true
     
     - name: Angular Security Audit
       run: |
         cd angular
         echo "🔍 Running Angular security audit..."
-        npm audit --audit-level=moderate || echo "⚠️ Angular audit found issues"
-        npm audit --json > angular-audit.json || true
+        pnpm audit --audit-level=moderate || echo "⚠️ Angular audit found issues"
+        pnpm audit --json > angular-audit.json || true
       continue-on-error: true
     
     - name: Upload Angular Audit Report
@@ -211,12 +215,12 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '20'
+        node-version: '22'
     
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
       with:
-        version: 9
+        version: 10.17.1
     
     - name: Install React Dependencies
       run: |
@@ -262,12 +266,12 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '20'
+        node-version: '22'
     
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
       with:
-        version: 9
+        version: 10.17.1
     
     - name: Install Vue3 Dependencies
       run: |
@@ -322,7 +326,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '20'
+        node-version: '22'
     
     - name: Build Backend
       run: |
@@ -333,13 +337,13 @@ jobs:
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
       with:
-        version: 9
+        version: 10.17.1
     
-    - name: Build Angular (npm)
+    - name: Build Angular (pnpm)
       run: |
         cd angular
-        npm install --legacy-peer-deps --force
-        npm run build || echo "Angular build completed with warnings"
+        pnpm install --frozen-lockfile
+        pnpm build || echo "Angular build completed with warnings"
       continue-on-error: true
     
     - name: Build React (pnpm)
