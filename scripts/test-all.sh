@@ -17,6 +17,19 @@ show_result() {
 total_tests=0
 passed_tests=0
 
+# Resolución de pnpm: binario global > corepack (que lee packageManager
+# de cada subproyecto: pnpm@10.17.1 fijado en los 3 frontends)
+run_pnpm() {
+    if command -v pnpm &> /dev/null; then
+        pnpm "$@"
+    elif command -v corepack &> /dev/null; then
+        corepack pnpm "$@"
+    else
+        echo "⚠️  Ni pnpm ni corepack disponibles" >&2
+        return 127
+    fi
+}
+
 # Tests del Backend
 echo ""
 echo "🔧 Testing Backend (Spring Boot)..."
@@ -37,8 +50,8 @@ echo ""
 echo "🅰️  Testing Angular (pnpm)..."
 if [ -d "angular" ]; then
     cd angular
-    if command -v pnpm &> /dev/null; then
-        pnpm run test-headless 2>/dev/null
+    if command -v pnpm &> /dev/null || command -v corepack &> /dev/null; then
+        run_pnpm run test-headless 2>/dev/null
         angular_result=$?
     else
         echo "⚠️  pnpm no encontrado, usando npm..."
@@ -58,8 +71,8 @@ echo ""
 echo "⚛️  Testing React (pnpm)..."
 if [ -d "react" ]; then
     cd react
-    if command -v pnpm &> /dev/null; then
-        pnpm test-headless 2>/dev/null
+    if command -v pnpm &> /dev/null || command -v corepack &> /dev/null; then
+        run_pnpm test-headless 2>/dev/null
         react_result=$?
     else
         echo "⚠️  pnpm no encontrado, usando npm..."
@@ -79,8 +92,8 @@ echo ""
 echo "🟢 Testing Vue3 (pnpm)..."
 if [ -d "vue3" ]; then
     cd vue3
-    if command -v pnpm &> /dev/null; then
-        pnpm test-headless 2>/dev/null
+    if command -v pnpm &> /dev/null || command -v corepack &> /dev/null; then
+        run_pnpm test-headless 2>/dev/null
         vue_result=$?
     else
         echo "⚠️  pnpm no encontrado, usando npm..."
