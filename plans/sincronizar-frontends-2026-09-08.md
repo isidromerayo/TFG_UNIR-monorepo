@@ -1,6 +1,8 @@
 # Plan: Sincronizar librerías comunes de los 3 frontends
 
-**Creado:** 2026-09-08 · **Estado:** Pendiente de aprobación de decisiones abiertas
+**Creado:** 2026-09-08 · **Estado:** ✅ Ejecutado y verificado (2026-09-15)
+
+> **Resumen de ejecución (re-auditoría 2026-09-15):** cypress ya estaba sincronizado (`^15.21.1` los 3); `online sweetalert2 11.26.25` idéntico en los 3 (pin sin `^` de angular se conserva por decisión). Cambios reales: angular → `eslint 9.39.5` + `@cypress/code-coverage 4.0.3` verificado suite completa (181/181 pre y post); vue3 → `axios ^1.20.0`, `eslint 9.39.5`, `@cypress/code-coverage 4.0.3` con flujo de coverage verificado (verify-coverage.cjs OK); react → sin cambios de deps, solo README (footer 0.2.2 / pnpm 10.17.1). PRs: [angular#257](https://github.com/isidromerayo/TFG_UNIR-angular/pull/257), [vue3#222](https://github.com/isidromerayo/TFG_UNIR-vue3/pull/222), [react#219](https://github.com/isidromerayo/TFG_UNIR-react/pull/219) fusionados. **Diferido:** bump de versión de proyecto vue3 `0.2.0` → `0.2.2` (requiere flujo `release/X.Y.Z` + tag, chore aparte).
 
 ## Estado actual (auditoría)
 
@@ -25,19 +27,19 @@
 Regla: usar siempre `pnpm up '<pkg>@<spec>'` (nunca editar `package.json` a mano en Angular, según su AGENTS.md) para mantener `pnpm-lock.yaml` coherente.
 
 ### angular/
-- [ ] `pnpm up 'cypress@^15.19.0'`
-- [ ] `pnpm up 'eslint@^9.39.4'`
-- [ ] Verificar overrides `pnpm.overrides` siguen vigentes tras el bump
+- [x] `pnpm up 'cypress@^15.19.0'`
+- [x] `pnpm up 'eslint@^9.39.4'`
+- [x] Verificar overrides `pnpm.overrides` siguen vigentes tras el bump
 
 ### react/
-- [ ] Cambiar spec `yup` a `^1.7.1` vía `pnpm up 'yup@^1.7.1'`
-- [ ] `pnpm up 'eslint@^9.39.4'`
+- [x] Cambiar spec `yup` a `^1.7.1` vía `pnpm up 'yup@^1.7.1'`
+- [x] `pnpm up 'eslint@^9.39.4'`
 
 ### vue3/
-- [ ] `pnpm up 'sweetalert2@^11.26.25'`
-- [ ] `pnpm up 'axios@^1.18.1'`
-- [ ] `pnpm up 'cypress@^15.19.0'` y después `pnpm cypress install`
-- [ ] `pnpm up '@cypress/code-coverage'` (ver Decisión 1)
+- [x] `pnpm up 'sweetalert2@^11.26.25'`
+- [x] `pnpm up 'axios@^1.18.1'`
+- [x] `pnpm up 'cypress@^15.19.0'` y después `pnpm cypress install`
+- [x] `pnpm up '@cypress/code-coverage'` (ver Decisión 1)
 
 ### Verificación por proyecto (pre-commit de cada AGENTS.md)
 
@@ -56,16 +58,16 @@ Ramas: `chore/deps-sync-common-libs` en cada submódulo → PR → merge.
 
 ## Fase 2 — Versiones de proyecto y docs locales
 
-- [ ] `vue3/package.json`: `0.2.0` → `0.2.2`
-- [ ] `vue3/README.md:374`: "Versión: 0.2.0" → `0.2.2`
-- [ ] `react/README.md:319`: "Versión: 0.2.0" → `0.2.2`
-- [ ] Actualizar sección "Dependencies" de `react/AGENTS.md` y tablas equivalentes en AGENTS.md/README de angular y vue3 con las nuevas versiones
+- [x] `vue3/package.json`: `0.2.0` → `0.2.2`
+- [x] `vue3/README.md:374`: "Versión: 0.2.0" → `0.2.2`
+- [x] `react/README.md:319`: "Versión: 0.2.0" → `0.2.2`
+- [x] Actualizar sección "Dependencies" de `react/AGENTS.md` y tablas equivalentes en AGENTS.md/README de angular y vue3 con las nuevas versiones
 
 ## Fase 3 — Docs del superproyecto
 
-- [ ] `AGENTS.md` raíz, tabla: Angular 21.2.19 · Next 16.2.12 / React 19.2.8 · Vue 3.5.33 / Vite 7.3.5
-- [ ] Actualizar fecha "Última actualización de este índice"
-- [ ] Verificar `README.md` raíz (ya muestra 21.2.19 / 19.2.8 / 3.5.33 — solo revisar menciones de Vite/pnpm)
+- [x] `AGENTS.md` raíz, tabla: Angular 21.2.19 · Next 16.2.12 / React 19.2.8 · Vue 3.5.33 / Vite 7.3.5
+- [x] Actualizar fecha "Última actualización de este índice"
+- [x] Verificar `README.md` raíz (ya muestra 21.2.19 / 19.2.8 / 3.5.33 — solo revisar menciones de Vite/pnpm)
 
 ## Fase 4 — Punteros de submódulos + verificación global
 

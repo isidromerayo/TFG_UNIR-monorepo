@@ -18,9 +18,9 @@ Para instrucciones detalladas, reglas de codificación y comandos específicos, 
 | Proyecto | Tecnología Principal | Versión Actual | Ruta a Docs |
 |----------|----------------------|----------------|-------------|
 | **Backend** | Spring Boot / Java | 3.5.16 / 21 | [backend/AGENTS.md](./backend/AGENTS.md) |
-| **Angular** | Angular / TypeScript | 21.2.11 | [angular/AGENTS.md](./angular/AGENTS.md) |
-| **React** | Next.js / React | 16.2.4 / 19.2.4 | [react/AGENTS.md](./react/AGENTS.md) |
-| **Vue3** | Vue 3 / Vite | 3.5.33 / 7.3.2 | [vue3/AGENTS.md](./vue3/AGENTS.md) |
+| **Angular** | Angular / TypeScript | 21.2.23 | [angular/AGENTS.md](./angular/AGENTS.md) |
+| **React** | Next.js / React | 16.3.4 / 19.2.8 | [react/AGENTS.md](./react/AGENTS.md) |
+| **Vue3** | Vue 3 / Vite | 3.5.42 / 7.3.6 | [vue3/AGENTS.md](./vue3/AGENTS.md) |
 
 > **⚠️ IMPORTANTE**: Antes de realizar cambios en un submódulo, LEE SIEMPRE su archivo `AGENTS.md` específico.
 
@@ -64,4 +64,4 @@ Ejecuta un análisis de seguridad en todos los proyectos:
 - **CI/CD**: GitHub Actions configurado en `.github/workflows`.
 
 ---
-**Última actualización de este índice:** Sep 2026 (pnpm unificada a 10.17.1)
+**Última actualización de este índice:** Sep 2026 (librerías comunes sincronizadas: axios 1.20, eslint 9.39.5, coverage 4.0.3)
