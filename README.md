@@ -325,7 +325,7 @@ Cada subproyecto puede desarrollarse independientemente:
 
 - **[Isidro Merayo](https://github.com/isidromerayo)** - Autor principal y desarrollador del TFG
 - **Kiro AI** - Asistente de desarrollo (histórico): configuración inicial del monorepo y automatización
-- **opencode + GLM (Z.ai)** - Asistente de desarrollo (2026): unificación de pnpm/Node 22, migración CI, hardening de seguridad, sincronización de librerías comunes, proceso de releases y documentación de agentes
+- **opencode (GLM, Qwen, Claude, DeepSeek, Grok, big-pickle…)** - Asistente de desarrollo (2026): unificación de pnpm/Node 22, migración CI, hardening de seguridad, sincronización de librerías comunes, proceso de releases y documentación de agentes
 
 ## 📄 Licencia
 
