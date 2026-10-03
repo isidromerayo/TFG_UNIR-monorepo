@@ -32,8 +32,8 @@ Motivación y alcance: ver `proposal.md` (sección Why/What Changes) y los requi
 1. **Acciones de GitHub: pin por etiqueta mayor (`@v7`) + Dependabot, no por commit SHA.**
    Alternativa considerada: fijar cada `uses:` a un SHA de commit (máxima protección contra re-tagging malicioso). Descartada: con Dependabot activo sobre el ecosistema `github-actions`, los PRs de actualización ya cierran la ventana de deriva, y el SHA pin reduce mucho la legibilidad para un repo académico. La protección por digest sí se aplica a la imagen Docker (Decisión 2), donde existe un precedente real de compromiso.
 
-2. **Trivy: fijar `docker.io/aquasec/trivy:v0.75.0@sha256:<digest>` (versión legible + digest inmutable).**
-   El digest se obtiene en implementación con `docker buildx imagetools inspect docker.io/aquasec/trivy:v0.75.0` (o `skopeo inspect`). Alternativas: (a) `aquasecurity/trivy-action` — descartada porque cambiaría el patrón existente de detección Podman/Docker y los inputs actuales; (b) pin solo por SHA del commit del repo de Trivy — innecesario, el vector fue la imagen publicada, no el código. Dependabot con `type: docker` mantendrá versión y digest sincronizados. Si al implementarlo existiera una versión > 0.75.0, fijar esa.
+2. **Trivy: Dockerfile acompañante `.github/workflows/trivy.dockerfile` con el pin `FROM docker.io/aquasec/trivy:0.75.0@sha256:<digest>`, y los `run:` invocan la imagen local `trivy-pinned` construida desde él.**
+   Motivo verificado en implementación: Dependabot NO parsea imágenes referenciadas dentro de pasos `run:` de workflows (dependabot-core #5819/#8362, sin soporte en 2026); el workaround soportado es un Dockerfile en `directory: "/.github/workflows"` que Dependabot sí mantiene. El job hace `$CONTAINER_CMD build -t trivy-pinned - < .github/workflows/trivy.dockerfile` (contexto vacío por stdin, funciona igual con Docker y Podman; equivale al pull del `:latest` anterior) y luego ejecuta `trivy-pinned` en los mismos comandos `fs`. El digest verificado de 0.75.0 (2026-10-01): `sha256:af6acf9a6b85dfe389a1941505c0ce9efef52a4719635e1a962f022a3d855daa`. Alternativas: (a) invocar la imagen fijada directamente en `run:` — descartada, Dependabot no la rastrearía y violaría el requisito de actualización automática del digest; (b) `aquasecurity/trivy-action` — descartada porque cambiaría el mecanismo de escaneo (binario nativo vs contenedor) y perdería el patrón Podman/Docker existente.
 
 3. **`pnpm/action-setup@v6`: eliminar el input `version: 10.17.1` y dejar que la acción resuelva pnpm desde `packageManager`.**
    v6 auto-actualiza su bootstrap a la versión fijada en `packageManager` del `package.json` (monorepo: la acción se ejecuta en la raíz, donde no hay `packageManager`, por lo que se verificará en el PR; si no resuelve, se mantiene `version: 10.17.1` explícito como fallback documentado). Motivo: una sola fuente de verdad alineada con AGENTS.md. Alternativa: conservar `version:` duplicado — refutada por riesgo de divergencia silenciosa con los `package.json`.
@@ -44,7 +44,7 @@ Motivación y alcance: ver `proposal.md` (sección Why/What Changes) y los requi
 
 6. **Dependabot (`dependabot.yml`)**: 
    - `github-actions` para `directory: /` y `/.github/workflows`, `interval: weekly`, un grupo `actions-minors` (`update-types: [version-update:semver-minor, version-update:semver-patch]`) y otro `actions-majors` (semver-major), `open-pull-requests-limit: 5`.
-   - `docker` para el ecosistema de la imagen Trivy fijada, semanal.
+   - `docker` con `directory: "/.github/workflows"` para el Dockerfile acompañante de Trivy (Decisión 2), semanal.
    - Sin `package-ecosystem: npm`/`maven` (la gestión de librerías pertenece a los submódulos y a `./scripts/update-all.sh`).
    Alternativa: Renovate — descartado por requerir desplegar un bot adicional con token propio; Dependabot es nativo y suficiente.
 
@@ -61,7 +61,7 @@ Motivación y alcance: ver `proposal.md` (sección Why/What Changes) y los requi
 ## Migration Plan
 
 1. Aplicar bumps de `uses:` en ambos workflows activos.
-2. Sustituir las 8 referencias a `aquasec/trivy:latest` por la imagen versionada+digest.
+2. Sustituir las 10 referencias a `aquasec/trivy:latest` por la construcción (`build - < trivy.dockerfile`) y ejecución de la imagen local `trivy-pinned`, con el pin versión+digest en el Dockerfile acompañante.
 3. Añadir `.github/dependabot.yml`.
 4. Push a rama, abrir PR, comprobar verde en ambos workflows (incluido un `workflow_dispatch` de Update Submodules).
 5. Fusionar. Rollback: revertir el commit único; no hay estado migrado.
