@@ -180,10 +180,9 @@ jobs:
     
     - name: Setup pnpm
       uses: pnpm/action-setup@v6
-
-    # TEMPORAL(tarea 1.4): verificar resolucion de packageManager; retirar en tarea 3.4
-    - name: Check pnpm version (temp)
-      run: pnpm --version
+      # Sin packageManager en la raiz del monorepo: version explicita (verificada en PR #15)
+      with:
+        version: 10.17.1
     
     - name: Install Angular Dependencies
       run: |
@@ -227,10 +226,9 @@ jobs:
     
     - name: Setup pnpm
       uses: pnpm/action-setup@v6
-
-    # TEMPORAL(tarea 1.4): verificar resolucion de packageManager; retirar en tarea 3.4
-    - name: Check pnpm version (temp)
-      run: pnpm --version
+      # Sin packageManager en la raiz del monorepo: version explicita (verificada en PR #15)
+      with:
+        version: 10.17.1
     
     - name: Install React Dependencies
       run: |
@@ -280,10 +278,9 @@ jobs:
     
     - name: Setup pnpm
       uses: pnpm/action-setup@v6
-
-    # TEMPORAL(tarea 1.4): verificar resolucion de packageManager; retirar en tarea 3.4
-    - name: Check pnpm version (temp)
-      run: pnpm --version
+      # Sin packageManager en la raiz del monorepo: version explicita (verificada en PR #15)
+      with:
+        version: 10.17.1
     
     - name: Install Vue3 Dependencies
       run: |
@@ -348,10 +345,9 @@ jobs:
     
     - name: Setup pnpm
       uses: pnpm/action-setup@v6
-
-    # TEMPORAL(tarea 1.4): verificar resolucion de packageManager; retirar en tarea 3.4
-    - name: Check pnpm version (temp)
-      run: pnpm --version
+      # Sin packageManager en la raiz del monorepo: version explicita (verificada en PR #15)
+      with:
+        version: 10.17.1
     
     - name: Build Angular (pnpm)
       run: |

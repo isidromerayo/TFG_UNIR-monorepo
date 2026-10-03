@@ -48,4 +48,4 @@ Las actualizaciones de versiones MUST mantener inalterados los jobs, pasos, arte
 
 #### Scenario: Sin cambios de versión de pnpm
 - **WHEN** los jobs de frontend ejecutan la instalación con `pnpm/action-setup` actualizado
-- **THEN** se usa pnpm `10.17.1`, resuelto desde el campo `packageManager` de los `package.json`, y `pnpm install --frozen-lockfile` tiene éxito
+- **THEN** se usa pnpm `10.17.1`, en coherencia con el campo `packageManager` de los `package.json` de cada frontend (la acción corre en la raíz del monorepo, que carece de `packageManager`, por lo que la versión se declara explícitamente en el workflow), y `pnpm install --frozen-lockfile` tiene éxito
