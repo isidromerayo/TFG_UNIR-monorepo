@@ -32,7 +32,7 @@ Ver `proposal.md - Why` para la motivación. Estado verificado (Oct 2026):
 ## Decisions
 
 1. **SHA de commit + comentario `# vX.Y.Z` en la misma línea, como estándar único.**
-   Alternativas: (a) tags mayores flotantes (`@v7`) — simples pero mutables, riesgo de cadena de suministro que ya motivó el pin de Trivy; (b) SHA sin comentario — inmutable pero ilegible e inauditable (el estado actual de los frontends). El comentario en la misma línea es, además, lo que Dependabot usa para documentar la versión al actualizar el SHA. Se resuelve cada tag a su commit con `git ls-remote --tags` y se usa el commit pelado (no el SHA del objeto tag anotado).
+   Alternativas: (a) tags mayores flotantes (`@v7`) — simples pero mutables, riesgo de cadena de suministro que ya motivó el pin de Trivy; (b) SHA sin comentario — inmutable pero ilegible e inauditable (el estado actual de los frontends). El comentario en la misma línea es, además, lo que Dependabot usa para documentar la versión al actualizar el SHA. Se resuelve cada tag a su commit con `git ls-remote --tags` y se usa el commit pelado (no el SHA del objeto tag anotado). **Excepción acordada**: acciones de terceros sin releases etiquetados que coincidan con el pin (p. ej. `snyk/actions/node`, cuyo commit actual es ~10 meses posterior al último tag `v1.0.0`) se fijan igualmente a un SHA y se anotan con la referencia usada (`# master @ YYYY-MM-DD`) en lugar de degradar a un release antiguo.
 
 2. **Bump y re-pinning en un solo paso para los rezagados (vue3, backend).**
    Alternativa: primero actualizar y luego re-pinnar — duplica PRs y deja una ventana con versiones antiguas. Se fija directamente el SHA de la mayor actual.

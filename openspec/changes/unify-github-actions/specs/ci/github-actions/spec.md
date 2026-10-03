@@ -3,11 +3,11 @@
 ## MODIFIED Requirements
 
 ### Requirement: Acciones de workflow en mayores soportadas
-Toda referencia `uses:` a una acción de terceros en los workflows de cualquiera de los repositorios del proyecto MUST fijarse a un SHA de commit completo de 40 caracteres con un comentario `# vX.Y.Z` en la misma línea, y MUST corresponder a la versión mayor más reciente soportada de esa acción. MUST NOT usarse tags flotantes (p. ej. `@v4`) ni referencias a ramas.
+Toda referencia `uses:` a una acción de terceros en los workflows de cualquiera de los repositorios del proyecto MUST fijarse a un SHA de commit completo de 40 caracteres con un comentario `# vX.Y.Z` en la misma línea, y MUST corresponder a la versión mayor más reciente soportada de esa acción. MUST NOT usarse tags flotantes (p. ej. `@v4`) ni referencias a ramas. Cuando una acción no publique releases etiquetados, MUST documentarse la referencia usada con una anotación de origen (p. ej. `# master @ YYYY-MM-DD`).
 
 #### Scenario: Auditoría de versiones de acciones
 - **WHEN** se listan todas las referencias `uses:` de los workflows de los cinco repositorios
-- **THEN** cada referencia es un SHA de 40 caracteres hexadecimales acompañado de un comentario `# vX.Y.Z`, y no queda ninguna referencia a tag flotante ni a rama
+- **THEN** cada referencia es un SHA de 40 caracteres hexadecimales acompañado de un comentario de versión (`# vX.Y.Z`, o la anotación de origen para acciones sin releases etiquetados) y no queda ninguna referencia a tag flotante ni a rama
 
 #### Scenario: Versión soportada al día
 - **WHEN** se resuelve cada SHA a su etiqueta de versión
