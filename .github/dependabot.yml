@@ -11,13 +11,13 @@ updates:
         patterns:
           - "*"
         update-types:
-          - "version-update:semver-minor"
-          - "version-update:semver-patch"
+          - "minor"
+          - "patch"
       actions-majors:
         patterns:
           - "*"
         update-types:
-          - "version-update:semver-major"
+          - "major"
 
   # Mantener version+digest del pin de Trivy (.github/workflows/trivy.dockerfile)
   - package-ecosystem: "docker"

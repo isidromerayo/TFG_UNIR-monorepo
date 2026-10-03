@@ -43,7 +43,7 @@ Motivación y alcance: ver `proposal.md` (sección Why/What Changes) y los requi
 5. **`upload-artifact@v7`**: los inputs usados (`name`, `path`, `retention-days`) no cambiaron semántica entre v4→v7 (v5/v6 fueron runtime Node 24; v7 añade uploads directos y ESM). No se requieren ajustes.
 
 6. **Dependabot (`dependabot.yml`)**: 
-   - `github-actions` para `directory: /` y `/.github/workflows`, `interval: weekly`, un grupo `actions-minors` (`update-types: [version-update:semver-minor, version-update:semver-patch]`) y otro `actions-majors` (semver-major), `open-pull-requests-limit: 5`.
+   - `github-actions` para `directory: /`, `interval: weekly`, un grupo `actions-minors` (`update-types: [minor, patch]`) y otro `actions-majors` (`update-types: [major]` — los valores cortos son los que acepta el parser de Dependabot; las cadenas `version-update:semver-*` provocan error de esquema), `open-pull-requests-limit: 5`.
    - `docker` con `directory: "/.github/workflows"` para el Dockerfile acompañante de Trivy (Decisión 2), semanal.
    - Sin `package-ecosystem: npm`/`maven` (la gestión de librerías pertenece a los submódulos y a `./scripts/update-all.sh`).
    Alternativa: Renovate — descartado por requerir desplegar un bot adicional con token propio; Dependabot es nativo y suficiente.
