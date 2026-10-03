@@ -12,7 +12,7 @@
 - [x] 2.1 Añadir el ecosistema `github-actions` (mismos parámetros de grupo que backend) a `vue3/.github/dependabot.yml`, conservando `npm`, y validar el YAML
 - [x] 2.2 Bump + re-pin a SHA+comentario de los rezagos de vue3: `actions/checkout` v4→v7, `actions/cache` v4→v6, `actions/upload-artifact` v4→v7, `actions/download-artifact` v4→v8, `pnpm/action-setup` v4→v6 (con `with: version: 10.17.1`), `actions/github-script` v7→v9, `SonarSource/sonarqube-scan-action` v6→v8, `google/osv-scanner-action` v2.5→v2.6, `github/codeql-action` a la actual; verificar que no queda ningún `uses:` sin comentario de versión (o la anotación de origen para acciones sin release, p. ej. snyk)
 - [x] 2.3 Hygiene vue3: eliminar el bloque comentado `#   uses: actions/setup-example@v1` de `vue3/.github/workflows/codeql.yml`
-- [ ] 2.4 Abrir el PR de vue3 y confirmar en verde sus workflows (CI, Tests, Security Audit, CodeQL) y `actionlint`
+- [x] 2.4 Abrir el PR de vue3 y confirmar en verde sus workflows (CI, Tests, Security Audit, CodeQL) y `actionlint`
 
 ## 3. Angular y React (TFG_UNIR-angular, TFG_UNIR-react)
 
@@ -20,7 +20,7 @@
 - [x] 3.2 Añadir el comentario `# vX.Y.Z` a cada `uses:` fijado por SHA en los workflows de angular y react, resolviendo el SHA a su tag con `git ls-remote --tags` (commit pelado, `^{}`); verificar con un script que cada SHA resuelve a la versión comentada
 - [x] 3.3 Añadir `with: version: 10.17.1` a todas las apariciones de `pnpm/action-setup` en angular (hoy depende de `packageManager`), para igualar el patrón de react
 - [x] 3.4 Hygiene: eliminar el bloque comentado `setup-example` de `angular/.github/workflows/codeql.yml` y `react/.github/workflows/codeql.yml`
-- [ ] 3.5 Abrir los PRs de angular y react y confirmar en verde sus workflows y `actionlint`
+- [x] 3.5 Abrir los PRs de angular y react y confirmar en verde sus workflows y `actionlint`
 
 ## 4. Monorepo (este repositorio)
 
