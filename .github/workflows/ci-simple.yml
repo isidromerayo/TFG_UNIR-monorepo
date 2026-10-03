@@ -12,12 +12,12 @@ jobs:
   backend-tests:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         submodules: recursive
     
     - name: Set up JDK 17
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v6
       with:
         java-version: '17'
         distribution: 'temurin'
@@ -43,12 +43,12 @@ jobs:
   security-analysis:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         submodules: recursive
     
     - name: Set up JDK 17
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v6
       with:
         java-version: '17'
         distribution: 'temurin'
@@ -74,26 +74,32 @@ jobs:
           exit 1
         fi
     
+    - name: Build pinned Trivy image
+      run: |
+        # Version+digest fijados en trivy.dockerfile (actualizado por Dependabot)
+        ${{ env.CONTAINER_CMD }} build -q -t trivy-pinned - < .github/workflows/trivy.dockerfile
+        ${{ env.CONTAINER_CMD }} run --rm trivy-pinned --version
+    
     - name: Run Trivy Security Scan - Backend
       run: |
         echo "🔍 Scanning backend dependencies with Trivy..."
         
         # Scan filesystem for vulnerabilities
         ${{ env.CONTAINER_CMD }} run --rm -v ${{ github.workspace }}:/workspace \
-          docker.io/aquasec/trivy:latest fs --format table --output /workspace/trivy-backend-report.txt /workspace/backend
+          trivy-pinned fs --format table --output /workspace/trivy-backend-report.txt /workspace/backend
         
         ${{ env.CONTAINER_CMD }} run --rm -v ${{ github.workspace }}:/workspace \
-          docker.io/aquasec/trivy:latest fs --format template --template "@contrib/html.tpl" \
+          trivy-pinned fs --format template --template "@contrib/html.tpl" \
           --output /workspace/trivy-backend-report.html /workspace/backend
         
         # Scan JAR file if exists
         if [ -f "backend/target/backend.jar" ]; then
           echo "📦 Scanning JAR file..."
           ${{ env.CONTAINER_CMD }} run --rm -v ${{ github.workspace }}:/workspace \
-            docker.io/aquasec/trivy:latest fs --format table --output /workspace/trivy-backend-jar.txt /workspace/backend/target/backend.jar
+            trivy-pinned fs --format table --output /workspace/trivy-backend-jar.txt /workspace/backend/target/backend.jar
           
           ${{ env.CONTAINER_CMD }} run --rm -v ${{ github.workspace }}:/workspace \
-            docker.io/aquasec/trivy:latest fs --format template --template "@contrib/html.tpl" \
+            trivy-pinned fs --format template --template "@contrib/html.tpl" \
             --output /workspace/trivy-backend-jar.html /workspace/backend/target/backend.jar
         fi
       continue-on-error: true
@@ -102,10 +108,10 @@ jobs:
       run: |
         echo "🔍 Scanning Angular dependencies with Trivy..."
         ${{ env.CONTAINER_CMD }} run --rm -v ${{ github.workspace }}:/workspace \
-          docker.io/aquasec/trivy:latest fs --format table --output /workspace/trivy-angular-report.txt /workspace/angular
+          trivy-pinned fs --format table --output /workspace/trivy-angular-report.txt /workspace/angular
         
         ${{ env.CONTAINER_CMD }} run --rm -v ${{ github.workspace }}:/workspace \
-          docker.io/aquasec/trivy:latest fs --format template --template "@contrib/html.tpl" \
+          trivy-pinned fs --format template --template "@contrib/html.tpl" \
           --output /workspace/trivy-angular-report.html /workspace/angular
       continue-on-error: true
     
@@ -113,10 +119,10 @@ jobs:
       run: |
         echo "🔍 Scanning React dependencies with Trivy..."
         ${{ env.CONTAINER_CMD }} run --rm -v ${{ github.workspace }}:/workspace \
-          docker.io/aquasec/trivy:latest fs --format table --output /workspace/trivy-react-report.txt /workspace/react
+          trivy-pinned fs --format table --output /workspace/trivy-react-report.txt /workspace/react
         
         ${{ env.CONTAINER_CMD }} run --rm -v ${{ github.workspace }}:/workspace \
-          docker.io/aquasec/trivy:latest fs --format template --template "@contrib/html.tpl" \
+          trivy-pinned fs --format template --template "@contrib/html.tpl" \
           --output /workspace/trivy-react-report.html /workspace/react
       continue-on-error: true
     
@@ -124,15 +130,15 @@ jobs:
       run: |
         echo "🔍 Scanning Vue3 dependencies with Trivy..."
         ${{ env.CONTAINER_CMD }} run --rm -v ${{ github.workspace }}:/workspace \
-          docker.io/aquasec/trivy:latest fs --format table --output /workspace/trivy-vue3-report.txt /workspace/vue3
+          trivy-pinned fs --format table --output /workspace/trivy-vue3-report.txt /workspace/vue3
         
         ${{ env.CONTAINER_CMD }} run --rm -v ${{ github.workspace }}:/workspace \
-          docker.io/aquasec/trivy:latest fs --format template --template "@contrib/html.tpl" \
+          trivy-pinned fs --format template --template "@contrib/html.tpl" \
           --output /workspace/trivy-vue3-report.html /workspace/vue3
       continue-on-error: true
     
     - name: Upload Trivy Reports
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       if: always()
       with:
         name: trivy-security-reports
@@ -163,17 +169,18 @@ jobs:
   angular-tests:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         submodules: recursive
     
     - name: Setup Node.js
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v7
       with:
         node-version: '22'
     
     - name: Setup pnpm
-      uses: pnpm/action-setup@v4
+      uses: pnpm/action-setup@v6
+      # Sin packageManager en la raiz del monorepo: version explicita (verificada en PR #15)
       with:
         version: 10.17.1
     
@@ -197,7 +204,7 @@ jobs:
       continue-on-error: true
     
     - name: Upload Angular Audit Report
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       if: always()
       with:
         name: angular-security-audit
@@ -208,17 +215,18 @@ jobs:
   react-tests:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         submodules: recursive
     
     - name: Setup Node.js
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v7
       with:
         node-version: '22'
     
     - name: Setup pnpm
-      uses: pnpm/action-setup@v4
+      uses: pnpm/action-setup@v6
+      # Sin packageManager en la raiz del monorepo: version explicita (verificada en PR #15)
       with:
         version: 10.17.1
     
@@ -248,7 +256,7 @@ jobs:
       continue-on-error: true
     
     - name: Upload React Audit Report
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       if: always()
       with:
         name: react-security-audit
@@ -259,17 +267,18 @@ jobs:
   vue3-tests:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         submodules: recursive
     
     - name: Setup Node.js
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v7
       with:
         node-version: '22'
     
     - name: Setup pnpm
-      uses: pnpm/action-setup@v4
+      uses: pnpm/action-setup@v6
+      # Sin packageManager en la raiz del monorepo: version explicita (verificada en PR #15)
       with:
         version: 10.17.1
     
@@ -299,7 +308,7 @@ jobs:
       continue-on-error: true
     
     - name: Upload Vue3 Audit Report
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       if: always()
       with:
         name: vue3-security-audit
@@ -312,19 +321,19 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         submodules: recursive
     
     - name: Set up JDK 17
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v6
       with:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
     
     - name: Setup Node.js
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v7
       with:
         node-version: '22'
     
@@ -335,7 +344,8 @@ jobs:
       continue-on-error: true
     
     - name: Setup pnpm
-      uses: pnpm/action-setup@v4
+      uses: pnpm/action-setup@v6
+      # Sin packageManager en la raiz del monorepo: version explicita (verificada en PR #15)
       with:
         version: 10.17.1
     
