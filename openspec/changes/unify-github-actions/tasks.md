@@ -31,6 +31,6 @@
 
 ## 5. Verificación de integración
 
-- [ ] 5.1 Confirmar que los PRs de los cuatro submódulos están fusionados y que su CI corre en verde con las versiones nuevas
-- [ ] 5.2 Actualizar los punteros de submódulo en el monorepo al commit fusionado de cada repo y verificar `ci-simple.yml` en verde (incluido el job de backend con JDK 21)
-- [ ] 5.3 Verificar que el check de configuración de Dependabot pasa en los 5 repos (o que los PRs de Dependabot se generan) y que el conjunto de acciones de angular, react y vue3 queda alineado
+- [x] 5.1 Confirmar que los PRs de los cuatro submódulos están fusionados y que su CI corre en verde con las versiones nuevas (backend #153, vue3 #241, angular #270, react #242: todos MERGED con checks en verde)
+- [x] 5.2 Actualizar los punteros de submódulo en el monorepo al commit fusionado de cada repo y verificar `ci-simple.yml` en verde (incluido el job de backend con JDK 21) — 7/7 jobs success
+- [x] 5.3 Verificar que el check de configuración de Dependabot pasa en los 5 repos y que el conjunto de acciones de angular, react y vue3 queda alineado (validación \"All changes look good\" en los 4 submódulos; job `github_actions` en success; alineación de acciones verificada). Nota: el job Dependabot `npm_and_yarn` de angular falla por un problema ajeno a este change
