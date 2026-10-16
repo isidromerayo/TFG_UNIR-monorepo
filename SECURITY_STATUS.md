@@ -208,3 +208,24 @@ pnpm update sweetalert2 typescript zone.js
 **Próxima revisión**: 29 de julio de 2026  
 **Responsable**: @isidromerayo  
 **Estado**: ✅ Todos los proyectos seguros
+
+---
+
+## 📌 Advisories aceptados (sin parche upstream)
+
+Un advisory sólo se acepta si **no existe** versión parcheada publicada. Cada proyecto lleva su
+registro en `docs/security/accepted-advisories.md` y se revisa en cada iteración:
+
+```bash
+./scripts/check-accepted-advisories.sh     # wrapper del monorepo (todos los submódulos)
+```
+
+Falla si algún advisory aceptado ya tiene parche → subir la dependencia y retirar el silencio en ese
+proyecto, borrando la entrada del registro.
+
+| Proyecto | Registro | Estado (2026-10-16) |
+|----------|----------|---------------------|
+| Backend | `backend/docs/security/accepted-advisories.md` | sin advisories aceptados |
+| Angular | `angular/docs/security/accepted-advisories.md` | `braces@3.0.3` (`GHSA-vfj7-8cjw-p6xm`) |
+| React | `react/docs/security/accepted-advisories.md` | `braces@3.0.3`, `sprintf-js@1.0.3` (`GHSA-hp3w-g68c-fv3c`) |
+| Vue3 | `vue3/docs/security/accepted-advisories.md` | `braces@3.0.3` (`GHSA-vfj7-8cjw-p6xm`) |
