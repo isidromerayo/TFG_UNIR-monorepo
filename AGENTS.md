@@ -46,6 +46,18 @@ Ejecuta un análisis de seguridad en todos los proyectos:
 ./scripts/security-audit.sh
 ```
 
+**Advisories aceptados (sin parche upstream)**: cada proyecto registra los suyos en
+`<proyecto>/docs/security/accepted-advisories.md` y un CVE sólo se acepta si **no existe** versión
+parcheada publicada. Antes de dar por buena una iteración, revísalos:
+
+```bash
+./scripts/check-accepted-advisories.sh
+```
+
+Falla si algún advisory aceptado ya tiene parche: entonces se sube la dependencia y se retira el
+silencio (`ignoreCves`, lista `ACCEPTED` del gate, dismissal de Dependabot, supresión de
+dependency-check) en el proyecto correspondiente, borrando la entrada del registro.
+
 ## 🔄 Flujo de Trabajo Recomendado para Agentes
 
 1.  **Identificar el Ámbito**: Determina en qué submódulo(s) necesitas realizar cambios.
