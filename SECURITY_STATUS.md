@@ -226,6 +226,6 @@ proyecto, borrando la entrada del registro.
 | Proyecto | Registro | Estado (2026-10-16) |
 |----------|----------|---------------------|
 | Backend | `backend/docs/security/accepted-advisories.md` | sin advisories aceptados |
-| Angular | `angular/docs/security/accepted-advisories.md` | `braces@3.0.3` (`GHSA-vfj7-8cjw-p6xm`) |
-| React | `react/docs/security/accepted-advisories.md` | `braces@3.0.3`, `sprintf-js@1.0.3` (`GHSA-hp3w-g68c-fv3c`) |
-| Vue3 | `vue3/docs/security/accepted-advisories.md` | `braces@3.0.3` (`GHSA-vfj7-8cjw-p6xm`) |
+| Angular | `angular/docs/security/accepted-advisories.md` | sin advisories aceptados |
+| React | `react/docs/security/accepted-advisories.md` | `sprintf-js@1.0.3` (`GHSA-hp3w-g68c-fv3c`) |
+| Vue3 | `vue3/docs/security/accepted-advisories.md` | sin advisories aceptados |
