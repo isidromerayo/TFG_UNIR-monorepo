@@ -46,6 +46,13 @@ Ejecuta un análisis de seguridad en todos los proyectos:
 ./scripts/security-audit.sh
 ```
 
+### Auditoría de Accesibilidad (pa11y)
+Ejecuta pa11y (WCAG2AA) en los 3 frontends y genera informes comparativos (advisory, no falla por hallazgos):
+```bash
+./scripts/a11y-audit.sh
+```
+Requiere backend en `:8080` y Chrome del sistema. Informes en `reports/a11y/`.
+
 **Advisories aceptados (sin parche upstream)**: cada proyecto registra los suyos en
 `<proyecto>/docs/security/accepted-advisories.md` y un CVE sólo se acepta si **no existe** versión
 parcheada publicada. Antes de dar por buena una iteración, revísalos:

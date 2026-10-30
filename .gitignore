@@ -149,3 +149,5 @@ security-reports/
 **/*-audit.json
 **/trivy-*-report.*
 trivy-*-report.*
+# Accessibility reports
+/reports
