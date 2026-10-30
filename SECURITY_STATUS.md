@@ -223,9 +223,9 @@ registro en `docs/security/accepted-advisories.md` y se revisa en cada iteració
 Falla si algún advisory aceptado ya tiene parche → subir la dependencia y retirar el silencio en ese
 proyecto, borrando la entrada del registro.
 
-| Proyecto | Registro | Estado (2026-10-16) |
+| Proyecto | Registro | Estado (2026-10-30) |
 |----------|----------|---------------------|
 | Backend | `backend/docs/security/accepted-advisories.md` | sin advisories aceptados |
-| Angular | `angular/docs/security/accepted-advisories.md` | `braces@3.0.3` (`GHSA-vfj7-8cjw-p6xm`) |
-| React | `react/docs/security/accepted-advisories.md` | `braces@3.0.3`, `sprintf-js@1.0.3` (`GHSA-hp3w-g68c-fv3c`) |
-| Vue3 | `vue3/docs/security/accepted-advisories.md` | `braces@3.0.3` (`GHSA-vfj7-8cjw-p6xm`) |
+| Angular | `angular/docs/security/accepted-advisories.md` | sin advisories aceptados |
+| React | `react/docs/security/accepted-advisories.md` | sin advisories aceptados |
+| Vue3 | `vue3/docs/security/accepted-advisories.md` | `extract-zip@2.0.1` (`GHSA-jmr9-qjv8-65gv`, `GHSA-7pqw-9j4j-h8q3`, dev-only) |
