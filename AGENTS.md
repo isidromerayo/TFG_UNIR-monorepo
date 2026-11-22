@@ -11,6 +11,21 @@ Este repositorio contiene la implementación de una plataforma de cursos online 
 - **Frontend 2**: React (Next.js).
 - **Frontend 3**: Vue 3.
 
+## 🔒 Política de ramas y merges (MUST, aplica a los 4 proyectos)
+
+- **Nunca commitear ni pushear directo a `main`/`master`**, ni force-push. Todo cambio va por
+  rama + PR (squash) con Conventional Commits.
+- **Prohibido aprobar o fusilar un PR con ANY check fallando o pendiente — incluidos los checks
+  que GitHub marca como no requeridos** ("Some non-required checks are failing" es un NO-GO).
+  Esperar a que TODOS estén en verde (build, lint, tests unit/E2E, Codacy, CodeQL, Sonar,
+  seguridad). La ruleset del repo no lo fuerza: la responsabilidad es de quien (o qué agente)
+  fuse.
+- **Codacy:** el "Default coding standard" de la org forzaba el tool ESLint8, incapaz de leer
+  los `eslint.config.*` flat de los frontends (avalancha `error typed`). Decisión 2026-11-22
+  (P2 del plan de CI): en angular/react/vue3 el estándar está desvinculado, ESLint8 desactivado
+  y **ESLint9** activo (con "use configuration file" donde Codacy lo detecta). Si vuelve a
+  aparecer una ola de anotaciones `ESLint8_*` en un PR, re-aplicar y reanalizar el PR.
+
 ## 🗺️ Mapa de Navegación
 
 Para instrucciones detalladas, reglas de codificación y comandos específicos, consulta el `AGENTS.md` de cada proyecto:
